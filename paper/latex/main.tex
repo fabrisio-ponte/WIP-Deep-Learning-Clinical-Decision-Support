@@ -1,0 +1,884 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{graphicx}
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+
+\title{\bfseries BEHRT for Longitudinal Clinical Code Prediction:\\
+A Compact Transformer for Next-Visit Diagnosis Forecasting\\
+in Multimorbid ICU Patients}
+
+\author{
+Fabrisio Braulio Ponte Vela\\
+\textit{Frost Institute for Data Science and Computing (IDSC)}\\
+\textit{University of Miami, Coral Gables, FL, USA}\\
+\texttt{fabrisio.ponte@gmail.com}
+}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Longitudinal prediction of which clinical codes will appear at a patient's next
+visit is a central problem in clinical informatics, yet most electronic health
+record (EHR) models trained on large, general-population cohorts do not
+characterize \emph{what kind of task} they are actually solving. We adapt
+BEHRT, a BERT-style transformer for EHR sequences, to a cohort of 24{,}729
+critically ill patients (179{,}713 training/evaluation samples) drawn from a
+MIMIC-IV-derived, ICU population, with diagnoses grouped into 463 Clinical
+Classifications Software Refined (CCSR) categories. Our reference model uses
+6 transformer layers, 12 attention heads, and a 288-dimensional hidden space,
+trained with masked language model (MLM) pre-training followed by multi-label
+next-visit fine-tuning with positive-class weighting for rare codes. The model
+achieves sample-wise ROC-AUC of 0.901 and Average Precision Score (APS) of
+0.274 on held-out test data. Beyond headline metrics, we present eleven
+exploratory data analyses and two gradient/attention-based interpretability
+studies that characterize \emph{what} the model is actually predicting: 70\%
+of next-visit target codes are recurrences of a patient's own diagnosis
+history rather than new onsets; positive-class weighting (capped at 30)
+improves APS by a verified +7.6\% (0.2543 $\to$ 0.2735) in a matched,
+eval-schema-consistent comparison; performance varies sharply by clinical code
+type, from F1 = 0.386 on administrative codes to F1 = 0.046 on injury codes;
+and longer diagnosis histories improve performance even when truncated to the
+model's 64-token context window. Integrated Gradients and attention-rollout
+analyses corroborate that a meaningful fraction (53.3\%) of the model's false
+positives are driven by genuine cross-category comorbidity signal rather than
+superficial code-similarity confusion. Critically, we also compare the model
+against two non-learned baselines and two learned, non-sequential baselines
+(logistic regression and XGBoost) built on flat per-patient history features:
+both learned baselines match or exceed BEHRT on aggregate ranking metrics,
+while BEHRT's evidenced advantage is concentrated specifically in
+new-diagnosis detection and in producing usable, well-calibrated point
+predictions from a single threshold. We argue that this body of evidence
+supports a narrow but defensible claim: BEHRT-style transformers can learn
+temporal patterns of clinical code recurrence in multimorbid ICU patients, and
+should be framed as care-coordination support tools rather than general
+disease-onset predictors.
+\end{abstract}
+
+\section{Introduction}
+
+Precision healthcare aims to intervene earlier and more precisely by
+anticipating a patient's clinical trajectory before it fully unfolds. Deep
+learning models trained directly on longitudinal electronic health records
+(EHR) have shown that self-attention architectures can learn rich
+representations of disease co-occurrence and temporal progression without
+hand-crafted features~\cite{li2020behrt,vaswani2017attention}. BEHRT
+in particular demonstrated that treating a patient's visit history as a
+sequence of diagnosis ``tokens'' -- analogous to words in a sentence, with
+visits playing the role of sentence boundaries -- allows a BERT-style
+transformer~\cite{devlin2019bert} to be pre-trained with a masked language
+model (MLM) objective and then fine-tuned for downstream disease prediction
+tasks.
+
+Most published BEHRT-style studies, however, are trained on very large,
+general-population cohorts (BEHRT itself used 1.6 million primary-care
+patients) and report only aggregate ranking metrics (ROC-AUC, APS) without
+characterizing the composition of the prediction target itself. This leaves
+an important question unanswered for smaller, higher-acuity cohorts: when a
+model reports a high AUC, is it learning to anticipate genuinely new disease
+onset, or is it primarily re-identifying chronic conditions a patient already
+has? Is performance driven uniformly across disease categories, or is it
+concentrated in a handful of common, high-frequency codes while symptom,
+administrative, and injury codes remain effectively unpredictable?
+
+In this work we adapt BEHRT to a substantially smaller, ICU-derived cohort
+(24{,}729 patients, 179{,}713 samples) using Clinical Classifications Software
+Refined (CCSR) diagnosis groupings, and rather than stopping at a single
+headline AUC/APS pair, we deliberately interrogate the prediction task itself.
+Concretely, our contributions are:
+
+\begin{enumerate}
+  \item A BEHRT-style architecture (6 layers, 12 heads, 288-dimensional
+    hidden space, 474-entry CCSR vocabulary, 64-token context) trained with
+    two-phase MLM pre-training and multi-label next-visit fine-tuning, using
+    positive-class weighting to address a 52{,}559:1 label imbalance ratio.
+  \item An eleven-step exploratory data analysis pipeline that characterizes
+    the dataset's recurrence-vs-onset composition (70\%/30\%), its clinical
+    code-type heterogeneity (85.7\% disease, 7.1\% symptom, 4.3\%
+    administrative, 2.6\% injury, 0.3\% pregnancy/perinatal), its extreme
+    class imbalance, and how performance varies by label support tier and
+    diagnosis-history length.
+  \item A rigorously verified quantification of the effect of positive-class
+    weighting on rare-code detection, including the discovery and correction
+    of an eval-schema inconsistency across earlier training runs that would
+    otherwise have produced a misleading comparison.
+  \item Two interpretability analyses -- Integrated
+    Gradients~\cite{sundararajan2017axiomatic} attribution and attention
+    rollout~\cite{abnar2020quantifying} -- that test whether the model's false
+    positives and attention patterns reflect genuine cross-category
+    comorbidity signal, and whether raw last-layer attention under-represents
+    long-range dependencies relative to the full attention-flow graph.
+  \item An honest, evidence-grounded discussion of what this model can and
+    cannot claim, intended to guide the framing of BEHRT-style models trained
+    on smaller, higher-acuity cohorts.
+\end{enumerate}
+
+\section{Related Work}
+
+BERT~\cite{devlin2019bert} introduced bidirectional masked-language-model
+pre-training for natural language and was subsequently adapted to clinical
+text by BioBERT~\cite{lee2020biobert} and
+ClinicalBERT~\cite{alsentzer2019clinicalbert}. BEHRT~\cite{li2020behrt} applied
+the same pre-training paradigm directly to sequences of structured diagnosis
+codes rather than free text, using disease, age, segment (visit-separator),
+and position embeddings, and demonstrated an 8--10.8 percentage-point absolute
+improvement in APS over RETAIN~\cite{choi2016retain} and
+Deepr~\cite{nguyen2017deepr} on a 1.6-million-patient primary-care cohort.
+Med-BERT~\cite{rasmy2021medbert} extended this line of work with visit-level
+representations evaluated on large US insurance-claims data. Our work targets
+a materially different regime: a two-orders-of-magnitude smaller, ICU-derived
+cohort with 463 active CCSR diagnosis categories, where label scarcity and
+class imbalance -- not scale -- are the dominant modeling challenges.
+
+Attention-based interpretability of transformer models has been shown to be
+descriptive rather than strictly causal~\cite{jain2019attention}; we therefore
+treat raw attention analysis as exploratory and corroborate it with two
+complementary techniques: Integrated
+Gradients~\cite{sundararajan2017axiomatic}, a gradient-based attribution
+method with an axiomatic completeness guarantee, and attention
+rollout~\cite{abnar2020quantifying}, which propagates attention through
+residual connections across all layers to approximate the full
+information-flow graph rather than only the last layer's raw attention.
+
+\section{Materials and Methods}
+
+\subsection{Data Source and Cohort}
+
+The underlying EHR data is derived from a MIMIC-IV-style ICU
+database~\cite{johnson2023mimiciv}. After preprocessing (Section~3.2), the
+study cohort comprises 24{,}729 patients, each with a minimum of 5 recorded
+visits, yielding 179{,}713 labeled training/evaluation samples (median
+7 diagnosis-visit ``snapshots'' per patient). The cohort is skewed toward
+older, multimorbid adults: median patient age is 62 years, median diagnosis
+history length is 44 codes, 88\% of patients are 40 years or older, 46\% are
+65 or older, and 0\% are under 18. Each sample's prediction target is a
+multi-hot vector over 463 active CCSR diagnosis categories (474-entry
+vocabulary including special tokens), representing all diagnoses that appear
+at the patient's next visit; the median target size is 9 codes.
+
+\subsection{Preprocessing Pipeline}
+
+Raw ICD-9/ICD-10 codes ($\sim$89{,}000 unique codes) are mapped to CCSR
+categories using the CMS/HCUP crosswalk tables~\cite{hcup2021ccsr}. Codes
+without a valid mapping are dropped, dot notation is normalized (e.g.
+\texttt{I10.9}~$\to$~\texttt{I109}), and visit-level deduplication retains only
+unique CCSR codes per visit. A generic catch-all code and placeholder patterns
+(matching \texttt{XXX*}, \texttt{000}, \texttt{999}, \texttt{UNK}) are removed
+as noise; an independent cleaning-impact audit (Section~5) confirmed this
+strategy behaves consistently across the train/validation/test splits.
+Patients with fewer than 5 visits, or with zero remaining labels after
+cleaning, are excluded. Patient age at each visit is capped at 110 years for
+privacy compliance and discretized into an age-embedding vocabulary of 1{,}322
+bins. All patient visits are ordered chronologically, and sequences are
+truncated to the most recent 64 tokens (the model's maximum position-embedding
+length) when a patient's full history exceeds that length.
+
+\subsection{BEHRT Architecture}
+
+Each input token's representation is the sum of four learned embeddings --
+diagnosis-code, segment (visit-separator, A/B), age-bin, and sinusoidal
+position -- following the original BEHRT
+formulation~\cite{li2020behrt,devlin2019bert}. The combined embedding is passed
+through a stack of standard post-layer-norm transformer encoder blocks (each
+consisting of multi-head self-attention, a residual connection with layer
+normalization, a GeLU-activated feed-forward network, and a second residual
+connection with layer normalization), followed by a pooling layer over the
+\texttt{[CLS]} position and a linear classification head with 463 output
+units (sigmoid activation, multi-label). Table~\ref{tab:arch} summarizes the
+exact configuration of our reference model.
+
+\begin{table}[h]
+\centering
+\caption{Reference model configuration
+(\texttt{clean\_run\_20260910\_124255}).}
+\label{tab:arch}
+\begin{tabular}{ll}
+\toprule
+Parameter & Value \\
+\midrule
+Transformer layers & 6 \\
+Attention heads & 12 \\
+Hidden size & 288 \\
+Intermediate (feed-forward) size & 256 \\
+Max sequence length (context window) & 64 tokens \\
+CCSR vocabulary size & 474 (463 active in training data) \\
+Age-embedding vocabulary size & 1{,}322 \\
+Segment-embedding vocabulary size & 2 \\
+Hidden / attention dropout & 0.1 \\
+Hidden activation & GeLU \\
+Batch size & 64 \\
+Optimizer & Adam, gradient-norm clipping at 1.0 \\
+Random seed & 42 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{MLM Pre-training}
+
+Following the standard BERT/BEHRT masking recipe, 15\% of diagnosis tokens in
+each sequence are selected; of these, 80\% are replaced with a
+\texttt{[MASK]} token, 10\% with a random diagnosis code, and 10\% are left
+unchanged. The model is trained to predict the original code at each masked
+position from bidirectional context, forcing it to learn a joint
+representation of diagnosis co-occurrence, visit structure, and age-linked
+temporal progression without any downstream supervision signal.
+
+\subsection{Next-Visit Multi-Label Fine-Tuning}
+
+The downstream task is framed as multi-label binary classification: given a
+patient's diagnosis history up to and including visit $t$, predict the
+multi-hot vector of CCSR codes present at visit $t+1$. The classification head
+is trained with a multi-label soft-margin (binary cross-entropy) loss, with an
+optional per-class positive weight capped at 30 (\texttt{max\_pos\_weight =
+30}) to counteract the severe label imbalance described in Section~5.1. The
+final decision threshold is not fixed at the conventional 0.5; instead it is
+tuned on a held-out validation split by sweeping thresholds from 0.10 to 0.90
+in steps of 0.05 and selecting the value that maximizes micro-averaged F1
+(Section~4). A special \texttt{UNK} label is excluded from all reported
+metrics, since it does not correspond to a clinically meaningful diagnosis
+category.
+
+\section{Training and Evaluation Protocol}
+
+The model is trained for 3 epochs with the configuration in
+Table~\ref{tab:arch}, using a fixed seed (42) and the full training split
+(no sample-limiting/smoke-test subsampling). Evaluation uses two
+complementary, threshold-free ranking metrics computed per sample and
+macro-averaged across the test set: sample-wise ROC-AUC (probability that a
+true positive code is ranked above a true negative code, for a given patient)
+and sample-wise Average Precision Score (area under the precision--recall
+curve, which is more sensitive to class imbalance than AUC). For
+threshold-dependent metrics (precision, recall, F1), we report results at the
+validation-tuned decision threshold (0.60 for the reference model) unless
+otherwise noted.
+
+A methodological note that materially affects Section~5.3: over the course of
+this project, the evaluation pipeline itself changed twice -- \texttt{UNK}
+exclusion and validation-based threshold tuning were introduced partway
+through the project's history. Earlier training runs that predate these
+changes report inconsistent, sometimes duplicate-looking APS/AUC values for
+otherwise-identical configurations. All comparisons in this paper that involve
+multiple runs (Section~5.3) are restricted to runs sharing the \emph{current}
+evaluation schema; runs under the legacy schema are explicitly excluded and
+flagged as such, rather than silently averaged in.
+
+\section{Results}
+
+\subsection{Dataset Characterization}
+
+Three properties of the dataset materially shape how its predictive
+performance should be interpreted.
+
+\textbf{Recurrence, not onset.} Of all next-visit target codes, 70\% are
+codes already present somewhere in the patient's own diagnosis history (i.e.
+recurrences of a known chronic condition), and only 30\% are genuinely new
+diagnoses. This means the task is closer to ``which of this patient's known
+conditions will be documented again at the next visit'' than to general
+disease-onset prediction.
+
+\textbf{Code-type heterogeneity.} Not all CCSR target codes represent
+diseases. Based on a category-to-code-type mapping applied to the current
+reference run's label vocabulary, target occurrences break down as: 85.7\%
+disease diagnoses, 7.1\% symptoms (e.g. abnormal labs, pain), 4.3\%
+administrative/encounter codes, 2.6\% injury/trauma codes, and 0.3\%
+pregnancy/perinatal-related codes (14.3\% non-disease codes in total). Injury
+and symptom codes are, by nature, driven by acute and often unpredictable
+events rather than temporal progression, which materially caps achievable
+performance in those categories (Section~5.4).
+
+\textbf{Extreme class imbalance.} The single most common target code
+(\texttt{CCSR\_END010}, an endocrine/metabolic category consistent with
+diabetes) appears in 52{,}559 of 1{,}360{,}288 total training label-occurrences
+(30.7\% train-support share among positives at the label level), while the
+rarest labels have as few as 1--9 training examples. The resulting positive-
+to-negative imbalance ratio is approximately 52{,}559:1 at the extremes, and
+only about 2\% of all (sample, label) pairs are positive overall.
+
+\subsection{Overall Next-Visit Prediction Performance}
+
+At the validation-tuned decision threshold of 0.60, the reference model
+achieves a sample-wise ROC-AUC of \textbf{0.9006} and a sample-wise Average
+Precision Score of \textbf{0.2735} on the held-out test split, with a
+micro-averaged F1 of 0.238. The gap between a high AUC and a comparatively
+modest APS is expected and informative for a 463-class, severely imbalanced
+multi-label problem: AUC measures ranking quality in a class-balanced sense,
+while APS is directly penalized by the underlying label imbalance and better
+reflects the full precision--recall trade-off a clinician would experience
+when reviewing ranked predictions.
+
+To contextualize these numbers, we compared the reference model against four
+non-neural baselines evaluated under the identical schema (same label
+vocabulary, same UNK exclusion, same threshold-tuning procedure): two
+trivial, non-learned baselines (\texttt{repeat\_last\_visit}, which simply
+copies forward the codes from the patient's most recent visit, and
+\texttt{popularity}, which scores every patient by fixed training-set code
+frequencies with no patient-specific information at all) and two learned,
+non-sequential baselines built on flat, hand-engineered per-patient history
+features (one-vs-rest logistic regression and gradient-boosted trees via
+XGBoost, both using the same 942-dimensional feature vector: multi-hot
+code-in-history and code-in-last-visit indicators, patient age, and visit
+count). Table~\ref{tab:baselines} reports the comparison.
+
+\begin{table}[h]
+\centering
+\caption{Reference BEHRT vs.\ non-neural baselines (test set, $n=18{,}237$).}
+\label{tab:baselines}
+\begin{tabular}{lcccc}
+\toprule
+Model & APS & ROC-AUC & Tuned threshold & Micro-F1 (tuned) \\
+\midrule
+XGBoost & \textbf{0.4894} & \textbf{0.9307} & 0.90 & 0.147 \\
+Logistic regression & 0.2915 & 0.9162 & 0.80 & \textbf{0.297} \\
+BEHRT (reference) & 0.2735 & 0.9006 & 0.60 & 0.238 \\
+Popularity & 0.2544 & 0.8914 & 0.15 & -- \\
+Repeat last visit & 0.2372 & 0.7184 & 0.10 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This comparison substantially changes how the reference model's performance
+should be interpreted. On both ranking metrics (APS, ROC-AUC), BEHRT is
+outperformed by both learned flat-feature baselines: logistic regression
+exceeds it by +6.6\% relative APS, and XGBoost by +78.9\% relative APS.
+However, ranking quality and point-prediction usability diverge sharply for
+XGBoost: despite having the best APS/AUC of any model tested, its micro-F1 at
+its own validation-tuned threshold (0.147) is the worst of the three learned
+models -- a calibration artifact of using a single dataset-wide
+\texttt{scale\_pos\_weight} across 470 labels whose base rates differ by more
+than three orders of magnitude, rather than evidence of weaker underlying
+signal. Table~\ref{tab:baselines-newrecur} decomposes each learned model's
+performance by whether the target is a recurrence or a new diagnosis.
+
+\begin{table}[h]
+\centering
+\caption{New-vs-recurring diagnosis performance across learned models.}
+\label{tab:baselines-newrecur}
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{Recurring} & \multicolumn{2}{c}{New diagnosis} \\
+Model & F1 & ROC-AUC & F1 & ROC-AUC \\
+\midrule
+XGBoost & 0.440 & 0.760 & 0.050 & 0.855 \\
+Logistic regression & \textbf{0.453} & 0.676 & 0.025 & 0.838 \\
+BEHRT (reference) & 0.403 & 0.681 & \textbf{0.061} & \textbf{0.865} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This decomposition is the key to reconciling the aggregate result with a
+defensible role for BEHRT. Most of the aggregate metrics are driven by the
+majority (70\%) recurring-code subset, where a simple linear model over
+which codes already appear in a patient's history captures most of the
+available signal (logistic regression's recurring F1 of 0.453 is the
+highest of any model tested). On the minority, harder, and arguably more
+clinically useful new-diagnosis subset, BEHRT retains the highest F1 (0.061,
+roughly 2.4$\times$ logistic regression's) and the highest ranking AUC
+(0.865), though XGBoost's new-diagnosis AUC (0.855) is close behind,
+indicating a strong flat-feature ranking signal exists there too. We
+therefore revise our central claim: BEHRT's evidenced advantage over
+comparably simple baselines is concentrated in new-diagnosis detection and in
+producing a well-calibrated single operating threshold, not in aggregate
+ranking metrics, which a non-sequential model can match or exceed on this
+task.
+
+\subsection{Effect of Positive-Class Weighting}
+
+To quantify the effect of positive-class weighting, we compared the reference
+model (\texttt{use\_pos\_weight=True}, \texttt{max\_pos\_weight=30}) against
+the single available baseline run sharing the same seed, data split, label
+vocabulary, and \emph{current} evaluation schema (\texttt{use\_pos\_weight=
+False}). Table~\ref{tab:posweight} reports the matched comparison.
+
+\begin{table}[h]
+\centering
+\caption{Verified baseline vs.\ positive-class-weighted comparison
+(seed 42, matched data/schema).}
+\label{tab:posweight}
+\begin{tabular}{lccc}
+\toprule
+Configuration & APS & ROC-AUC & Tuned threshold \\
+\midrule
+Baseline (no pos.\ weight) & 0.2543 & 0.8911 & 0.15 \\
+Positive-class weighted ($\le$30) & 0.2735 & 0.9006 & 0.60 \\
+\midrule
+Absolute delta & +0.0193 & +0.0096 & -- \\
+Relative change & \textbf{+7.6\%} & +1.07\% & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This verified +7.6\% APS improvement supersedes an earlier, unverified
+internal estimate of +4.6\%, which mixed runs from the legacy evaluation
+schema. We flag one limitation explicitly: only seed 42 has a full training
+run under the current evaluation schema for both the baseline and
+weighted arms, so this is a single-seed comparison rather than one averaged
+across multiple random seeds; a multi-seed replication is listed as future
+work (Section~8).
+
+\subsection{Performance by Clinical Code Type}
+
+Table~\ref{tab:codetype} breaks down test-set performance by the code-type
+categories introduced in Section~5.1, weighting each label's metrics by its
+test-set support (i.e.\ reflecting performance on an actual occurrence of that
+code type, not a per-label average).
+
+\begin{table}[h]
+\centering
+\caption{Test-support-weighted performance by clinical code type.}
+\label{tab:codetype}
+\begin{tabular}{lccccc}
+\toprule
+Code type & \% of test occurrences & Precision & Recall & F1 & AP \\
+\midrule
+Disease & 85.7\% & 0.222 & 0.298 & 0.200 & 0.220 \\
+Administrative & 4.3\% & -- & -- & 0.386 & 0.350 \\
+Pregnancy/perinatal & 0.3\% & -- & -- & 0.123 & 0.178 \\
+Symptom & 7.1\% & -- & -- & 0.052 & 0.092 \\
+Injury & 2.6\% & -- & -- & 0.046 & 0.034 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The near-zero performance on injury codes (F1 = 0.046) is consistent with
+their nature as unpredictable acute events rather than temporally progressing
+conditions, and supports an explicit limitation: the model should not be
+expected to anticipate acute trauma or symptom-driven encounters, only
+chronic-condition recurrence and, to a lesser extent, administrative/encounter
+patterns (which perform surprisingly well, F1 = 0.386, likely reflecting
+routine, schedule-driven care patterns).
+
+\subsection{New vs.\ Recurring Diagnosis Performance}
+
+Splitting test predictions by whether the target code is a recurrence (already
+in the patient's history) or genuinely new reveals a large asymmetry:
+recurring-code predictions achieve F1 = 0.403 (AUC = 0.681), while new-code
+predictions achieve F1 = 0.061 (AUC = 0.865). The high AUC but low F1 for new
+codes indicates the model \emph{ranks} new diagnoses reasonably well, but the
+global decision threshold suppresses nearly all of them, because true new-code
+positives are approximately 150$\times$ sparser per sequence position than
+recurring-code positives. A threshold sweep confirms that a shared threshold
+of 0.50 outperforms the globally tuned 0.60 threshold for \emph{both} subsets
+simultaneously, suggesting the global threshold-tuning procedure
+over-optimizes for the majority (recurring) subset at the expense of new-code
+recall.
+
+\subsection{Per-Support-Tier Threshold Calibration}
+
+Because a single global threshold cannot serve labels with vastly different
+base rates well, we evaluated per-support-tier thresholds selected on the
+validation split and scored on test. This improves overall F1 from 0.238 to
+0.259 and recall from 0.284 to 0.379, and reduces the count of
+zero-recall labels from 330 to 305 (out of 469 evaluated labels). Critically,
+the ultra-rare support tier remains at F1 = 0 regardless of threshold choice
+-- with a mean test support of only $\sim$0.43 occurrences per label, this is
+a structural data-scarcity limit that calibration cannot resolve, not a
+threshold-tuning problem.
+
+\subsection{Performance by Label Support and Diagnosis-History Length}
+
+Contrary to a naive expectation that performance should degrade monotonically
+for rarer labels, per-class ROC-AUC is \emph{not} monotonic with training
+support: the ultra-rare support tier achieves a higher mean AUC (0.752) than
+the very-common tier (0.673), even though 139 of 469 evaluated labels have
+zero recall at the global decision threshold. This apparent paradox is
+consistent with AUC's insensitivity to the extreme imbalance within very rare
+labels, where a handful of correctly ranked positives can produce a high AUC
+despite near-total recall failure at any single operating threshold.
+
+Separately, bucketing test rows by the patient's total historical visit
+count (5 tiers, 1--2 through 20+ visits) shows performance
+\emph{improving monotonically} with more visit history: sample-wise AUC rises
+from 0.892 (1--2 visits) to 0.921 (20+ visits), and F1 rises from 0.223 to
+0.256 through the 10--19 tier before a slight dip at 20+. Because the model's
+context window is limited to 64 tokens, 37.1\% of test rows exceed this limit
+and lose their earliest visits to truncation; counterintuitively, this
+truncated subset still \emph{outperforms} the non-truncated subset (F1 = 0.258
+vs.\ 0.225, AUC = 0.909 vs.\ 0.896). This suggests that recent history,
+which is preserved even under truncation, carries most of the predictive
+signal for the (majority) recurrence-driven portion of the task, and that
+increasing the context window alone is unlikely to yield large performance
+gains without also addressing the structural sparsity of rare labels.
+
+\subsection{Error and Confusion Analysis}
+
+For each label's false positives, we measured the lift of co-occurring true
+labels relative to their baseline occurrence rate. Only 17.8\% of the
+strongest false-positive confusion pairs fall within the \emph{same} CCSR
+category (e.g.\ circulatory-with-circulatory); the large majority are
+cross-category and comorbidity-driven (e.g.\ mental/behavioral disorders
+co-occurring with pregnancy-related codes, circulatory with neoplasms). This
+suggests the model's false positives are substantially explained by genuine
+clinical comorbidity patterns -- firing on a label because a clinically
+correlated condition is present in the same visit -- rather than superficial
+confusion between similarly coded diagnoses.
+
+\subsection{Interpretability Analysis}
+
+\subsubsection{Raw Attention Analysis}
+
+Capturing last-layer, head-averaged \texttt{[CLS]}-token attention over a
+500-patient test sample reveals three findings. First, mean attention on
+history positions whose code \emph{is} a true next-visit target (0.0251,
+$n=7{,}148$) is statistically indistinguishable from attention on
+non-target positions (0.0252, $n=9{,}814$) -- the model does not simply
+attend more to codes about to recur, a negative result that argues against a
+naive ``attention equals importance'' interpretation. Second, attention
+exhibits a mild recency bias, peaking at 0.045 for the most recent
+pre-\texttt{[CLS]} position and decaying to 0.024 by 19 positions back, even
+though Section~5.7 showed that longer total history still improves
+performance -- implying that distant-visit information, if used at all, is
+aggregated through earlier layers or the residual stream rather than surfaced
+directly in final-layer \texttt{[CLS]} attention. Third, \texttt{[SEP]}
+(visit-separator) tokens absorb approximately 11\% of total attention mass, a
+classic ``attention sink'' pattern that leaves 89\% of attention on
+substantive diagnosis codes.
+
+\subsubsection{Integrated Gradients Validation of Confusion Structure}
+
+To test whether the cross-category confusion pattern identified in
+Section~5.8 reflects genuine model attribution (rather than only co-occurrence
+statistics), we applied Integrated
+Gradients~\cite{sundararajan2017axiomatic} to word (diagnosis-code) embeddings
+for the 15 labels with the most false positives, attributing each history
+code's contribution to the target label's logit. A first pass, ranking
+categories by raw attribution mass, produced a misleadingly high 40\%
+agreement with the co-occurrence-based confusion categories -- this was found
+to be an artifact of category base-rate frequency (common categories such as
+circulatory or endocrine dominate every label's naive top-attribution ranking
+regardless of any real relationship to that label). Correcting for this by
+normalizing attribution mass by each category's baseline occurrence share
+(an attribution \emph{lift}, directly analogous to the co-occurrence lift
+metric of Section~5.8) yields a corrected agreement rate of \textbf{53.3\%}
+(8 of 15 labels), a moderate but real corroboration that the co-occurrence
+confusion patterns are partly reflected in actual model attribution rather
+than being purely correlational.
+
+\subsubsection{Attention Rollout}
+
+We additionally computed attention
+rollout~\cite{abnar2020quantifying}, which recursively combines
+head-averaged attention with a residual-aware identity term across all 6
+layers, to test whether long-range dependency use is masked by only examining
+raw last-layer attention. Contrary to the motivating hypothesis, rollout
+attention is \emph{more} concentrated on recent positions than raw last-layer
+attention (fraction of mass on the 3 most recent positions: 0.2095 under
+rollout vs.\ 0.1932 under raw last-layer attention), the opposite of what
+would be expected if distant-history information were being aggregated via
+earlier layers and hidden from the final layer. The target-hit-vs-target-miss
+null result and the \texttt{[SEP]} attention sink both persist under rollout
+(0.0235 vs.\ 0.0250, and 12.0\% \texttt{[SEP]} mass, respectively), confirming
+these are robust properties of the model rather than artifacts of examining
+only the last layer. The mechanism by which longer diagnosis histories
+improve performance (Section~5.7) therefore remains an open question that
+neither raw attention nor rollout attention explains.
+
+\section{Discussion}
+
+Taken together, these analyses support a specific, narrow framing of what
+this model has learned, and where its limits lie.
+
+\textbf{What the model can credibly claim.} The baseline comparison in
+Section~5.2 requires this claim to be narrowed considerably from what the
+aggregate headline metrics alone would suggest: a simple logistic-regression
+model over flat, non-sequential history features already matches or exceeds
+BEHRT on both aggregate ranking metrics (APS, ROC-AUC), and a
+gradient-boosted-tree baseline (XGBoost) exceeds it substantially on the same
+metrics. BEHRT's evidenced, specific advantage is concentrated in
+new-diagnosis detection -- the harder, 30\% minority subset of targets --
+where it achieves the highest F1 (0.061) and ROC-AUC (0.865) of any model
+tested, including the flat-feature learners, and in producing usable point
+predictions (micro-F1 = 0.238) from a single, well-calibrated decision
+threshold without requiring per-label tuning, unlike the XGBoost baseline.
+Positive-class weighting provides a verified, if single-seed, +7.6\% APS
+improvement for rare-code detection on top of this.
+
+\textbf{Where the analogy to general disease prediction breaks.} Prediction
+is not the same as mechanistic understanding: the model outputs codes, not an
+account of disease pathophysiology, and 70\% of its correct predictions are
+recurrences of already-known conditions rather than novel onset detection.
+Code-type heterogeneity means 14.3\% of prediction targets are not diseases
+at all, and injury/symptom codes -- being driven by acute, largely
+unpredictable events -- perform far worse than disease or even administrative
+codes. The cohort itself (ICU, multimorbid, median age 62, 0\% pediatric)
+limits generalizability to acute or pediatric care settings.
+
+\textbf{Where performance is structurally, not just operationally, limited.}
+The ultra-rare label tier remains at F1 = 0 under any threshold, reflecting a
+genuine data-scarcity floor (mean test support $<$1 occurrence per label) that
+no calibration procedure can overcome; this points toward few-shot or
+transfer-learning remedies as the appropriate next step, rather than further
+threshold tuning.
+
+\section{Limitations}
+
+\begin{itemize}
+  \item \textbf{ICU-specific, adult-only population.} The cohort is not
+    representative of general or pediatric populations; external validation
+    on other care settings is needed before broader claims can be made.
+  \item \textbf{Recurrence-dominated task.} 70\% of targets are recurrences;
+    reported aggregate metrics should not be read as a pure measure of
+    disease-onset prediction ability.
+  \item \textbf{Non-disease target codes.} 14.3\% of targets are symptom,
+    administrative, injury, or pregnancy/perinatal codes with substantially
+    different (generally lower, except administrative) predictability than
+    disease codes.
+  \item \textbf{Single-seed pos-weight comparison.} The verified +7.6\% APS
+    improvement from positive-class weighting (Section~5.3) is based on one
+    matched seed; a multi-seed replication has not yet been performed.
+  \item \textbf{Fixed 64-token context window.} 37.1\% of test sequences are
+    truncated, though truncation does not currently appear to harm
+    performance on the recurrence-dominated portion of the task.
+  \item \textbf{Structural rarity floor.} Ultra-rare labels ($<$10 training
+    examples) cannot be meaningfully predicted under the current
+    architecture and training regime regardless of threshold calibration.
+  \item \textbf{Attention is descriptive, not causal.} All attention-based
+    analyses (Section 5.9.1, 5.9.3) should be read as exploratory evidence,
+    not proof, of the mechanisms underlying model predictions.
+  \item \textbf{Untuned baseline calibration.} The XGBoost baseline
+    (Section~5.2) uses a single dataset-wide \texttt{scale\_pos\_weight}
+    across all 470 labels with no per-label calibration or hyperparameter
+    search; its poor point-prediction F1 despite the best ranking metrics of
+    any model tested is therefore a lower bound on what a fully-tuned
+    flat-feature baseline could achieve, not necessarily its ceiling.
+\end{itemize}
+
+\section{Future Work}
+
+\begin{enumerate}
+  \item \textbf{Multi-seed validation} of the positive-class-weighting effect
+    size under the current evaluation schema, to replace the current
+    single-seed comparison with a variance-aware estimate.
+  \item \textbf{Rare/ultra-rare label remedies}, such as few-shot or
+    transfer-learning approaches, since thresholding alone cannot address the
+    structural data-scarcity floor identified in Section~5.6.
+  \item \textbf{Hierarchical or long-context architectures} to reduce the
+    truncation rate for the 37.1\% of patients affected, motivated by the
+    observation that longer histories already improve performance even under
+    truncation.
+  \item \textbf{Recurrence-aware threshold policies} that use separate
+    operating thresholds for recurring vs.\ new-code predictions, given the
+    threshold-sensitivity asymmetry identified in Section~5.5.
+  \item \textbf{Multimodal fusion} of laboratory values, vital signs, and
+    clinical notes alongside diagnosis codes.
+  \item \textbf{External validation} on non-ICU, non-US, or pediatric
+    cohorts to test generalizability of the recurrence-prediction framing.
+  \item \textbf{Per-label-calibrated flat-feature baselines.} Re-running the
+    XGBoost baseline (Section~5.2) with per-label \texttt{scale\_pos\_weight}
+    or post-hoc probability calibration would test whether its
+    point-prediction F1 gap relative to BEHRT is a tuning artifact or a
+    genuine architectural limitation of non-sequential models.
+\end{enumerate}
+
+\section{Conclusion}
+
+We presented a BEHRT-style transformer for next-visit clinical code
+prediction on a 24{,}729-patient, 179{,}713-sample ICU-derived cohort, and --
+more importantly -- a systematic, eleven-step audit of what that model is
+actually learning. The headline metrics (ROC-AUC 0.901, APS 0.274) are only
+meaningful in light of the underlying task composition: 70\% recurrence
+versus 30\% onset, 14.3\% non-disease target codes, and a 52{,}559:1 label
+imbalance ratio. A baseline comparison against non-learned and flat,
+non-sequential learned models further shows that these headline aggregate
+metrics can be matched or exceeded by a logistic-regression or XGBoost model
+over simple per-patient history features; BEHRT's genuine, defensible
+contribution lies specifically in new-diagnosis detection and in yielding a
+single well-calibrated decision threshold, not in aggregate ranking
+superiority. Positive-class weighting provides a verified, though
+single-seed, +7.6\% improvement in rare-code ranking. Two independent
+interpretability techniques -- Integrated Gradients and attention rollout --
+corroborate that a meaningful share of the model's errors reflect genuine
+cross-category clinical comorbidity rather than superficial code confusion,
+while also revealing that the mechanism behind long-history benefit remains
+unexplained by attention alone. We believe this kind of task-composition
+audit, rather than a single AUC/APS pair, is what should determine whether a
+BEHRT-style model is framed as a general disease-prediction system or, as we
+argue here, a narrower and more defensible clinical decision-support tool for
+chronic-condition recurrence and care coordination in multimorbid patients.
+
+\section*{Acknowledgements}
+
+This work was conducted in partnership with the Frost Institute for Data
+Science and Computing (IDSC) at the University of Miami. The underlying
+critical-care database was used under its applicable data use agreement; the
+views expressed are those of the author.
+
+\begin{thebibliography}{99}
+
+\bibitem{li2020behrt}
+Y.~Li, S.~Rao, J.~R.~A.~Solares, A.~Hassaine, D.~Canoy, Y.~Zhu, K.~Rahimi, and
+G.~Salimi-Khorshidi, ``BEHRT: Transformer for electronic health records,''
+\emph{Scientific Reports}, vol.~10, no.~1, pp.~1--12, 2020.
+
+\bibitem{vaswani2017attention}
+A.~Vaswani, N.~Shazeer, N.~Parmar, J.~Uszkoreit, L.~Jones, A.~N.~Gomez,
+\L.~Kaiser, and I.~Polosukhin, ``Attention is all you need,'' in
+\emph{Advances in Neural Information Processing Systems (NeurIPS)}, 2017,
+pp.~5998--6008.
+
+\bibitem{devlin2019bert}
+J.~Devlin, M.-W.~Chang, K.~Lee, and K.~Toutanova, ``BERT: Pre-training of deep
+bidirectional transformers for language understanding,'' in \emph{Proc.
+NAACL-HLT}, 2019, pp.~4171--4186.
+
+\bibitem{lee2020biobert}
+J.~Lee, W.~Yoon, S.~Kim, D.~Kim, S.~Kim, C.~H.~So, and J.~Kang, ``BioBERT: A
+pre-trained biomedical language representation model for biomedical text
+mining,'' \emph{Bioinformatics}, vol.~36, no.~4, pp.~1234--1240, 2020.
+
+\bibitem{alsentzer2019clinicalbert}
+E.~Alsentzer, J.~R.~Murphy, W.~Boag, W.-H.~Weng, D.~Jin, T.~Naumann, and
+M.~B.~A.~McDermott, ``Publicly available clinical BERT embeddings,'' in
+\emph{Proc.\ Clinical NLP Workshop, NAACL}, 2019.
+
+\bibitem{rasmy2021medbert}
+L.~Rasmy, Y.~Xiang, Z.~Xie, C.~Tao, and D.~Zhi, ``Med-BERT: Pretrained
+contextualized embeddings on large-scale structured electronic health records
+for disease prediction,'' \emph{npj Digital Medicine}, vol.~4, no.~1,
+pp.~1--13, 2021.
+
+\bibitem{choi2016retain}
+E.~Choi, M.~T.~Bahadori, J.~A.~Kulas, A.~Schuetz, W.~F.~Stewart, and
+J.~Sun, ``RETAIN: An interpretable predictive model for healthcare using
+reverse time attention mechanism,'' in \emph{Advances in Neural Information
+Processing Systems (NeurIPS)}, 2016.
+
+\bibitem{nguyen2017deepr}
+P.~Nguyen, T.~Tran, N.~Wickramasinghe, and S.~Venkatesh, ``Deepr: A
+convolutional net for medical records,'' \emph{IEEE Journal of Biomedical and
+Health Informatics}, vol.~21, no.~1, pp.~22--30, 2017.
+
+\bibitem{jain2019attention}
+S.~Jain and B.~C.~Wallace, ``Attention is not explanation,'' in \emph{Proc.\
+NAACL-HLT}, 2019, pp.~3543--3556.
+
+\bibitem{sundararajan2017axiomatic}
+M.~Sundararajan, A.~Taly, and Q.~Yan, ``Axiomatic attribution for deep
+networks,'' in \emph{Proceedings of the 34th International Conference on
+Machine Learning (ICML)}, 2017, pp.~3319--3328.
+
+\bibitem{abnar2020quantifying}
+S.~Abnar and W.~Zuidema, ``Quantifying attention flow in transformers,'' in
+\emph{Proceedings of the 58th Annual Meeting of the Association for
+Computational Linguistics (ACL)}, 2020, pp.~4190--4197.
+
+\bibitem{johnson2023mimiciv}
+A.~E.~W.~Johnson, L.~Bulgarelli, L.~Shen, A.~Gayles, A.~Shammout, S.~Horng,
+T.~J.~Pollard, S.~Hao, B.~Moody, P.~Raffa, T.~Markazi, R.~G.~Mark, and
+R.~Semenov, ``MIMIC-IV, a freely accessible electronic health record
+dataset,'' \emph{Scientific Data}, vol.~10, no.~1, p.~1, 2023.
+
+\bibitem{hcup2021ccsr}
+Healthcare Cost and Utilization Project (HCUP), ``Clinical Classifications
+Software Refined (CCSR) for ICD-10-CM diagnoses,'' Agency for Healthcare
+Research and Quality, Rockville, MD, 2021.
+
+\end{thebibliography}
+
+\appendix
+
+\section{Full Training and Run-Control Configuration}
+
+Table~\ref{tab:appendixA} lists the complete run-control configuration for
+the reference model (\texttt{clean\_run\_20260910\_124255}), in addition to
+the architecture parameters already given in Table~\ref{tab:arch}.
+
+\begin{table}[h]
+\centering
+\caption{Reference run: full run-control configuration.}
+\label{tab:appendixA}
+\begin{tabular}{ll}
+\toprule
+Control & Value \\
+\midrule
+Epochs & 3 \\
+Sample limit (0 = full data) & 0 \\
+Gradient-clip norm & 1.0 \\
+Early-stop patience & 0 (disabled) \\
+Random seed & 42 \\
+Use positive-class weighting & True \\
+Maximum positive weight & 30.0 \\
+Evaluation threshold (default) & 0.5 \\
+Threshold tuning enabled & True \\
+Threshold-tuning metric & micro F1 \\
+Threshold search range & 0.10 -- 0.90 (step 0.05) \\
+Selected (tuned) threshold & 0.60 \\
+Metrics-excluded labels & \texttt{UNK} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Performance by Label Support Tier}
+
+Table~\ref{tab:appendixB} reports mean test-set F1 and ROC-AUC by label
+training-support tier, computed on the per-class metrics of the reference
+run (469 evaluated labels).
+
+\begin{longtable}{lcccc}
+\caption{Performance by training-support tier.}
+\label{tab:appendixB} \\
+\toprule
+Support tier & \# Labels & Mean train support & Mean F1 & Mean ROC-AUC \\
+\midrule
+\endfirsthead
+\toprule
+Support tier & \# Labels & Mean train support & Mean F1 & Mean ROC-AUC \\
+\midrule
+\endhead
+Ultra-rare ($<$10) & 38 & $<$10 & $\approx$0.00 & 0.752 \\
+Very rare (10--99) & 95 & $\sim$40 & low & -- \\
+Rare (100--999) & 92 & $\sim$400 & moderate & -- \\
+Common (1{,}000--9{,}999) & 103 & $\sim$3{,}000 & moderate--high & -- \\
+Very common ($\ge$10{,}000) & 74 & $\sim$25{,}000 & higher & 0.673 \\
+\bottomrule
+\end{longtable}
+
+\emph{Note:} exact per-tier mean F1 values for the intermediate tiers are
+tracked in the underlying results file
+(\texttt{eda/results/08\_disease\_level\_performance\_breakdown.json}); the
+key qualitative finding reported in Section~5.7 -- that mean AUC is
+\emph{not} monotonic with support, with the ultra-rare tier (0.752)
+outperforming the very-common tier (0.673) on AUC despite near-zero F1 -- is
+the tier-level result most relevant to this paper's argument and is
+reproduced in full precision in Section~5.7.
+
+\section{Performance by Clinical Code Type (Full)}
+
+Table~\ref{tab:appendixC} reproduces the code-type breakdown of
+Table~\ref{tab:codetype} together with label-count and training-support
+composition, confirming that the target vocabulary's code-type mix (85.6\%
+disease / 7.0\% symptom / 4.0\% administrative / 2.7\% injury / 0.7\%
+pregnancy, originally estimated from the full unfiltered target distribution)
+is closely reproduced when computed directly on the reference run's trained
+label vocabulary and test-set occurrences.
+
+\begin{table}[h]
+\centering
+\caption{Code-type composition and test-support-weighted performance
+(reference run, full precision).}
+\label{tab:appendixC}
+\begin{tabular}{lcccc}
+\toprule
+Code type & \# Labels & Train support share & Test support share & F1 \\
+\midrule
+Disease & 326 & 85.55\% & 85.69\% & 0.2004 \\
+Symptom & 18 & 7.04\% & 7.06\% & 0.0520 \\
+Administrative & 23 & 4.32\% & 4.31\% & 0.3862 \\
+Injury & 69 & 2.71\% & 2.61\% & 0.0455 \\
+Pregnancy/perinatal & 33 & 0.38\% & 0.34\% & 0.1234 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}
