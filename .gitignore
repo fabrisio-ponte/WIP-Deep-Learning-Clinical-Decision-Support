@@ -218,6 +218,9 @@ data/models/
 *.txt
 *.tsv
 
+# Large regeneratable prediction caches (re-run xgboost_baseline.py to recreate)
+BEHRT_main/BEHRT_thesis/BEHRT_Project/results/xgboost_test_y_prob.npy
+
 # Logs
 *.log
 logs/

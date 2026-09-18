@@ -1,0 +1,268 @@
+{
+  "n_bootstrap": 500,
+  "rng_seed": 42,
+  "metric_exclude_labels": [
+    "UNK"
+  ],
+  "per_model_metrics": {
+    "popularity": {
+      "name": "popularity",
+      "threshold": 0.15000000000000002,
+      "sample_wise_aps": {
+        "point": 0.25442566623356805,
+        "ci95": [
+          0.25207273131267505,
+          0.25686552307821175
+        ]
+      },
+      "sample_wise_auc": {
+        "point": 0.8914073141464616,
+        "ci95": [
+          0.890242190323649,
+          0.892439761530649
+        ]
+      },
+      "micro_f1": {
+        "point": 0.2715952207008696,
+        "ci95": [
+          0.2691285532829908,
+          0.27400578589907354
+        ]
+      }
+    },
+    "repeat_last_visit": {
+      "name": "repeat_last_visit",
+      "threshold": 0.1,
+      "sample_wise_aps": {
+        "point": 0.23717240851907495,
+        "ci95": [
+          0.2345553946685404,
+          0.23982855639408363
+        ]
+      },
+      "sample_wise_auc": {
+        "point": 0.7184033669245679,
+        "ci95": [
+          0.7165381770620793,
+          0.7201746353495574
+        ]
+      },
+      "micro_f1": {
+        "point": 0.42639587897448045,
+        "ci95": [
+          0.423709381805116,
+          0.4291848085504155
+        ]
+      }
+    },
+    "logistic_regression": {
+      "name": "logistic_regression",
+      "threshold": 0.8000000000000003,
+      "sample_wise_aps": {
+        "point": 0.2915229053525199,
+        "ci95": [
+          0.28904403750534424,
+          0.2938672543490611
+        ]
+      },
+      "sample_wise_auc": {
+        "point": 0.916212177220309,
+        "ci95": [
+          0.9152728657758505,
+          0.9170974382865085
+        ]
+      },
+      "micro_f1": {
+        "point": 0.29660187300277685,
+        "ci95": [
+          0.2945982194909134,
+          0.2986170743214251
+        ]
+      }
+    },
+    "xgboost": {
+      "name": "xgboost",
+      "threshold": 0.9000000000000002,
+      "sample_wise_aps": {
+        "point": 0.48941629748690724,
+        "ci95": [
+          0.48628719458795544,
+          0.49238850159112263
+        ]
+      },
+      "sample_wise_auc": {
+        "point": 0.9307178383381851,
+        "ci95": [
+          0.9296967503260222,
+          0.931786249598598
+        ]
+      },
+      "micro_f1": {
+        "point": 0.14668823086311839,
+        "ci95": [
+          0.14548169079808043,
+          0.1478785592721169
+        ]
+      }
+    },
+    "behrt": {
+      "name": "behrt",
+      "threshold": 0.6000000000000002,
+      "sample_wise_aps": {
+        "point": 0.2735042664371461,
+        "ci95": [
+          0.27082972550658096,
+          0.27623639521013776
+        ]
+      },
+      "sample_wise_auc": {
+        "point": 0.9006413129955593,
+        "ci95": [
+          0.8997051805554498,
+          0.9015695128912683
+        ]
+      },
+      "micro_f1": {
+        "point": 0.23813476344080678,
+        "ci95": [
+          0.23576899492248224,
+          0.2403180474812561
+        ]
+      }
+    }
+  },
+  "paired_deltas_vs_behrt": [
+    {
+      "comparison": "behrt - popularity",
+      "metric": "aps",
+      "delta": 0.019078600203578044,
+      "ci95": [
+        0.016187864055599507,
+        0.022262078495250352
+      ],
+      "bootstrap_p_value": 0.0,
+      "significant_at_0.05": true
+    },
+    {
+      "comparison": "behrt - popularity",
+      "metric": "auc",
+      "delta": 0.009233998849097702,
+      "ci95": [
+        0.008548063798239521,
+        0.010003809081950416
+      ],
+      "bootstrap_p_value": 0.0,
+      "significant_at_0.05": true
+    },
+    {
+      "comparison": "behrt - popularity",
+      "metric": "f1",
+      "delta": -0.03346045726006283,
+      "ci95": [
+        -0.03594854181121934,
+        -0.030920255174633125
+      ],
+      "bootstrap_p_value": 0.0,
+      "significant_at_0.05": true
+    },
+    {
+      "comparison": "behrt - repeat_last_visit",
+      "metric": "aps",
+      "delta": 0.03633185791807114,
+      "ci95": [
+        0.03329044716129181,
+        0.03946919350427517
+      ],
+      "bootstrap_p_value": 0.0,
+      "significant_at_0.05": true
+    },
+    {
+      "comparison": "behrt - repeat_last_visit",
+      "metric": "auc",
+      "delta": 0.18223794607099142,
+      "ci95": [
+        0.18069942312551854,
+        0.18401198460001753
+      ],
+      "bootstrap_p_value": 0.0,
+      "significant_at_0.05": true
+    },
+    {
+      "comparison": "behrt - repeat_last_visit",
+      "metric": "f1",
+      "delta": -0.18826111553367367,
+      "ci95": [
+        -0.19144345838040433,
+        -0.1850011465164076
+      ],
+      "bootstrap_p_value": 0.0,
+      "significant_at_0.05": true
+    },
+    {
+      "comparison": "behrt - logistic_regression",
+      "metric": "aps",
+      "delta": -0.018018638915373808,
+      "ci95": [
+        -0.020683580941179645,
+        -0.015189551388007127
+      ],
+      "bootstrap_p_value": 0.0,
+      "significant_at_0.05": true
+    },
+    {
+      "comparison": "behrt - logistic_regression",
+      "metric": "auc",
+      "delta": -0.015570864224749736,
+      "ci95": [
+        -0.016354764732402813,
+        -0.014626030184251088
+      ],
+      "bootstrap_p_value": 0.0,
+      "significant_at_0.05": true
+    },
+    {
+      "comparison": "behrt - logistic_regression",
+      "metric": "f1",
+      "delta": -0.05846710956197007,
+      "ci95": [
+        -0.060524899682607214,
+        -0.05619546509116205
+      ],
+      "bootstrap_p_value": 0.0,
+      "significant_at_0.05": true
+    },
+    {
+      "comparison": "behrt - xgboost",
+      "metric": "aps",
+      "delta": -0.21591203104976114,
+      "ci95": [
+        -0.21843224637022496,
+        -0.2132308059527249
+      ],
+      "bootstrap_p_value": 0.0,
+      "significant_at_0.05": true
+    },
+    {
+      "comparison": "behrt - xgboost",
+      "metric": "auc",
+      "delta": -0.030076525342625837,
+      "ci95": [
+        -0.030821384748275192,
+        -0.029234025560199627
+      ],
+      "bootstrap_p_value": 0.0,
+      "significant_at_0.05": true
+    },
+    {
+      "comparison": "behrt - xgboost",
+      "metric": "f1",
+      "delta": 0.0914465325776884,
+      "ci95": [
+        0.08909597567337806,
+        0.09377989797922003
+      ],
+      "bootstrap_p_value": 0.0,
+      "significant_at_0.05": true
+    }
+  ]
+}
