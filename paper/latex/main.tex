@@ -362,7 +362,37 @@ its own validation-tuned threshold (0.147) is the worst of the three learned
 models -- a calibration artifact of using a single dataset-wide
 \texttt{scale\_pos\_weight} across 470 labels whose base rates differ by more
 than three orders of magnitude, rather than evidence of weaker underlying
-signal. Table~\ref{tab:baselines-newrecur} decomposes each learned model's
+signal.
+
+To confirm these ranking-metric gaps are not an artifact of sampling noise in
+a single fixed test split, we computed 500-resample bootstrap 95\% confidence
+intervals for APS and ROC-AUC for every model, together with paired
+significance tests of each baseline's delta against BEHRT (shared resample
+indices across models). Table~\ref{tab:bootstrap} reports the result: all
+eight paired deltas (APS and AUC, four baselines) are statistically
+significant at $p<0.001$, confirming that both the XGBoost/logistic-regression
+advantage on ranking metrics and BEHRT's advantage over the two non-learned
+baselines are genuine rather than noise.
+
+\begin{table}[h]
+\centering
+\caption{Bootstrap 95\% confidence intervals (500 resamples, test set) and
+significance of each model's paired delta vs.\ BEHRT.}
+\label{tab:bootstrap}
+\begin{tabular}{lccc}
+\toprule
+Model & APS (95\% CI) & ROC-AUC (95\% CI) & $p$ vs.\ BEHRT (APS, AUC) \\
+\midrule
+XGBoost & 0.4894 (0.4863, 0.4924) & 0.9307 (0.9297, 0.9318) & $<0.001$, $<0.001$ \\
+Logistic regression & 0.2915 (0.2890, 0.2939) & 0.9162 (0.9153, 0.9171) & $<0.001$, $<0.001$ \\
+BEHRT (reference) & 0.2735 (0.2708, 0.2762) & 0.9006 (0.8997, 0.9016) & -- \\
+Popularity & 0.2544 (0.2521, 0.2569) & 0.8914 (0.8902, 0.8924) & $<0.001$, $<0.001$ \\
+Repeat last visit & 0.2372 (0.2346, 0.2398) & 0.7184 (0.7165, 0.7202) & $<0.001$, $<0.001$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:baselines-newrecur} decomposes each learned model's
 performance by whether the target is a recurrence or a new diagnosis.
 
 \begin{table}[h]
@@ -396,6 +426,21 @@ comparably simple baselines is concentrated in new-diagnosis detection and in
 producing a well-calibrated single operating threshold, not in aggregate
 ranking metrics, which a non-sequential model can match or exceed on this
 task.
+
+A natural objection to XGBoost's poor point-prediction F1 is that it is
+merely a threshold-calibration artifact of using one dataset-wide
+\texttt{scale\_pos\_weight}, and that per-label threshold tuning would close
+most of the gap to BEHRT. We tested this directly: refitting the identical
+XGBoost model and replacing its single global decision threshold (tuned on
+validation micro-F1) with 470 independently F1-maximized per-label
+thresholds (46 of which had zero validation positives and fell back to the
+global threshold) recovers only +0.0079 absolute test micro-F1
+(0.1467~$\to$~0.1546) -- a small fraction of the 0.091 gap to BEHRT's 0.238.
+This rejects a purely threshold-based explanation and points instead to the
+training-time \texttt{scale\_pos\_weight} itself -- a single value averaged
+across labels whose base rates differ by more than three orders of
+magnitude -- as the more likely source of XGBoost's poorly calibrated
+per-label probabilities, rather than the choice of decision threshold alone.
 
 \subsection{Effect of Positive-Class Weighting}
 
@@ -652,10 +697,14 @@ threshold tuning.
     not proof, of the mechanisms underlying model predictions.
   \item \textbf{Untuned baseline calibration.} The XGBoost baseline
     (Section~5.2) uses a single dataset-wide \texttt{scale\_pos\_weight}
-    across all 470 labels with no per-label calibration or hyperparameter
-    search; its poor point-prediction F1 despite the best ranking metrics of
-    any model tested is therefore a lower bound on what a fully-tuned
-    flat-feature baseline could achieve, not necessarily its ceiling.
+    across all 470 labels; we showed that post-hoc per-label threshold
+    calibration only marginally improves its micro-F1 (+0.008 absolute),
+    so its poor point-prediction F1 despite the best ranking metrics of any
+    model tested is more likely driven by the training-time cost-weighting
+    itself than by threshold selection -- a fully per-label-weighted refit
+    (untested here, see Section~8) remains a lower bound on what a
+    fully-tuned flat-feature baseline could achieve, not necessarily its
+    ceiling.
 \end{itemize}
 
 \section{Future Work}
@@ -678,11 +727,17 @@ threshold tuning.
     clinical notes alongside diagnosis codes.
   \item \textbf{External validation} on non-ICU, non-US, or pediatric
     cohorts to test generalizability of the recurrence-prediction framing.
-  \item \textbf{Per-label-calibrated flat-feature baselines.} Re-running the
-    XGBoost baseline (Section~5.2) with per-label \texttt{scale\_pos\_weight}
-    or post-hoc probability calibration would test whether its
-    point-prediction F1 gap relative to BEHRT is a tuning artifact or a
-    genuine architectural limitation of non-sequential models.
+  \item \textbf{Per-label training-time cost-weighting for flat-feature
+    baselines.} We found (Section~5.2) that post-hoc per-label threshold
+    calibration only marginally improves XGBoost's point-prediction F1
+    (+0.008 absolute), rejecting a purely threshold-based explanation for its
+    gap relative to BEHRT. Re-running the XGBoost baseline with per-label
+    \texttt{scale\_pos\_weight} set at \emph{training} time (requiring $N$
+    separate single-label fits or a custom multi-label objective, rather
+    than the one shared weight \texttt{OneVsRestClassifier} currently uses)
+    would test whether the remaining gap reflects a training-time
+    calibration artifact or a genuine architectural limitation of
+    non-sequential models.
 \end{enumerate}
 
 \section{Conclusion}
