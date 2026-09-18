@@ -11,6 +11,10 @@
 \hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
 \usepackage[T1]{fontenc}
 \usepackage{times}
+% Use Latin Modern for typewriter text: the URW Courier (pcr) metrics that
+% `times` selects for \ttdefault are not installed in this TeX Live scheme,
+% while Latin Modern (lmodern) is always available.
+\renewcommand{\ttdefault}{lmtt}
 
 \title{\bfseries BEHRT for Longitudinal Clinical Code Prediction:\\
 A Compact Transformer for Next-Visit Diagnosis Forecasting\\

@@ -225,6 +225,15 @@ BEHRT_main/BEHRT_thesis/BEHRT_Project/results/xgboost_test_y_prob.npy
 *.log
 logs/
 
+# LaTeX build artifacts
+*.aux
+*.out
+*.toc
+*.bbl
+*.blg
+*.synctex.gz
+missfont.log
+
 # OS
 .DS_Store
 .DS_Store?
