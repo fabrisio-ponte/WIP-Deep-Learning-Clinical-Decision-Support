@@ -1,0 +1,2879 @@
+{
+  "label_vocab_size": 470,
+  "train_rows": 143677,
+  "val_rows": 17799,
+  "test_rows": 18237,
+  "metric_exclude_labels": [
+    "UNK"
+  ],
+  "avg_scale_pos_weight": 8009.617954297558,
+  "reference_model": {
+    "run_id": "clean_run_20260910_124255",
+    "sample_wise_aps": 0.2735172133816801,
+    "sample_wise_auc": 0.9006313974430638,
+    "micro_f1": 0.238104707408862,
+    "selected_threshold": 0.6000000000000002
+  },
+  "global_threshold": {
+    "threshold": 0.9000000000000002,
+    "val_micro_f1": 0.14719060203670623,
+    "test_metrics": {
+      "threshold": 0.9000000000000002,
+      "sample_wise_aps": 0.48941629748690724,
+      "sample_wise_auc": 0.9307178383381851,
+      "subset_accuracy": 0.0,
+      "micro_precision": 0.08016638451598132,
+      "micro_recall": 0.8618441294109294,
+      "micro_f1": 0.14668823086311839,
+      "samples_precision": 0.09361735915713638,
+      "samples_recall": 0.8726136083926657,
+      "samples_f1": 0.160753722677774,
+      "hamming_accuracy": 0.8018644118724405,
+      "top_k_metrics": {
+        "top_5_precision": 0.5426769753797225,
+        "top_5_recall": 0.34559267460865717,
+        "top_10_precision": 0.4161978395569447,
+        "top_10_recall": 0.4969457244398461
+      },
+      "per_class_metrics": [],
+      "train_support_tiers": []
+    }
+  },
+  "per_label_threshold": {
+    "n_labels_fallback_to_global": 46,
+    "test_metrics": {
+      "sample_wise_aps": 0.48941629748690724,
+      "sample_wise_auc": 0.9307178383381851,
+      "subset_accuracy": 0.0,
+      "micro_precision": 0.08500259183010332,
+      "micro_recall": 0.8528388516791707,
+      "micro_f1": 0.15459652227540255,
+      "samples_precision": 0.09785467584733859,
+      "samples_recall": 0.8639952569909903,
+      "samples_f1": 0.16712716512603987,
+      "hamming_accuracy": 0.8156884367671197,
+      "top_k_metrics": {
+        "top_5_precision": 0.5426769753797225,
+        "top_5_recall": 0.34559267460865717,
+        "top_10_precision": 0.4161978395569447,
+        "top_10_recall": 0.4969457244398461
+      }
+    },
+    "threshold_table": [
+      {
+        "label": "CCSR_BLD001",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.12656130512362987,
+        "val_support": 1126
+      },
+      {
+        "label": "CCSR_BLD002",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.08855291576673867,
+        "val_support": 106
+      },
+      {
+        "label": "CCSR_BLD003",
+        "threshold": 0.8,
+        "val_f1_at_threshold": 0.21923216790482622,
+        "val_support": 2160
+      },
+      {
+        "label": "CCSR_BLD004",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.10432607416127133,
+        "val_support": 841
+      },
+      {
+        "label": "CCSR_BLD005",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.5768025078369906,
+        "val_support": 112
+      },
+      {
+        "label": "CCSR_BLD006",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.1747619332814278,
+        "val_support": 1618
+      },
+      {
+        "label": "CCSR_BLD007",
+        "threshold": 0.5,
+        "val_f1_at_threshold": 0.1042032548881864,
+        "val_support": 967
+      },
+      {
+        "label": "CCSR_BLD008",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.17476340694006312,
+        "val_support": 361
+      },
+      {
+        "label": "CCSR_BLD009",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.022038567493112945,
+        "val_support": 141
+      },
+      {
+        "label": "CCSR_BLD010",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.018369690011481053,
+        "val_support": 75
+      },
+      {
+        "label": "CCSR_CIR001",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.09870038637161924,
+        "val_support": 369
+      },
+      {
+        "label": "CCSR_CIR002",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 2
+      },
+      {
+        "label": "CCSR_CIR003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.1403976224636196,
+        "val_support": 818
+      },
+      {
+        "label": "CCSR_CIR004",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.048484848484848485,
+        "val_support": 48
+      },
+      {
+        "label": "CCSR_CIR005",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.15854063018242123,
+        "val_support": 565
+      },
+      {
+        "label": "CCSR_CIR006",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.039539899352983465,
+        "val_support": 124
+      },
+      {
+        "label": "CCSR_CIR007",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.533765196556926,
+        "val_support": 6070
+      },
+      {
+        "label": "CCSR_CIR008",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.019020446980504042,
+        "val_support": 106
+      },
+      {
+        "label": "CCSR_CIR009",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.07939273270283724,
+        "val_support": 428
+      },
+      {
+        "label": "CCSR_CIR010",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 5
+      },
+      {
+        "label": "CCSR_CIR011",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.4820941435951012,
+        "val_support": 4250
+      },
+      {
+        "label": "CCSR_CIR012",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.08907575001781516,
+        "val_support": 778
+      },
+      {
+        "label": "CCSR_CIR013",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.025568797399783315,
+        "val_support": 144
+      },
+      {
+        "label": "CCSR_CIR014",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.1419033205733108,
+        "val_support": 956
+      },
+      {
+        "label": "CCSR_CIR015",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.021276595744680854,
+        "val_support": 122
+      },
+      {
+        "label": "CCSR_CIR016",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0855374226223973,
+        "val_support": 574
+      },
+      {
+        "label": "CCSR_CIR017",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.3756581499750596,
+        "val_support": 3497
+      },
+      {
+        "label": "CCSR_CIR018",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.016775396085740912,
+        "val_support": 55
+      },
+      {
+        "label": "CCSR_CIR019",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.4651969284121873,
+        "val_support": 3837
+      },
+      {
+        "label": "CCSR_CIR020",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.037633189752890504,
+        "val_support": 158
+      },
+      {
+        "label": "CCSR_CIR021",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.03327596098680436,
+        "val_support": 98
+      },
+      {
+        "label": "CCSR_CIR022",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.12658227848101267,
+        "val_support": 24
+      },
+      {
+        "label": "CCSR_CIR023",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.07557973089035214,
+        "val_support": 224
+      },
+      {
+        "label": "CCSR_CIR024",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.04827299209321681,
+        "val_support": 126
+      },
+      {
+        "label": "CCSR_CIR025",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.1622431506849315,
+        "val_support": 471
+      },
+      {
+        "label": "CCSR_CIR026",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.25894088931338216,
+        "val_support": 1328
+      },
+      {
+        "label": "CCSR_CIR027",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.026881720430107527,
+        "val_support": 30
+      },
+      {
+        "label": "CCSR_CIR028",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.045112781954887216,
+        "val_support": 68
+      },
+      {
+        "label": "CCSR_CIR029",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.09084354722422494,
+        "val_support": 262
+      },
+      {
+        "label": "CCSR_CIR030",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0532994923857868,
+        "val_support": 73
+      },
+      {
+        "label": "CCSR_CIR031",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.11105632934796007,
+        "val_support": 1012
+      },
+      {
+        "label": "CCSR_CIR032",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.026203534430225474,
+        "val_support": 142
+      },
+      {
+        "label": "CCSR_CIR033",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.05316500711237554,
+        "val_support": 423
+      },
+      {
+        "label": "CCSR_CIR034",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.01855670103092784,
+        "val_support": 74
+      },
+      {
+        "label": "CCSR_CIR035",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.026666666666666665,
+        "val_support": 23
+      },
+      {
+        "label": "CCSR_CIR036",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.05425547771650023,
+        "val_support": 289
+      },
+      {
+        "label": "CCSR_CIR038",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.023575638506876228,
+        "val_support": 128
+      },
+      {
+        "label": "CCSR_CIR039",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.1373287155548863,
+        "val_support": 541
+      },
+      {
+        "label": "CCSR_DIG001",
+        "threshold": 0.75,
+        "val_f1_at_threshold": 0.05630227001194744,
+        "val_support": 482
+      },
+      {
+        "label": "CCSR_DIG002",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0167032967032967,
+        "val_support": 74
+      },
+      {
+        "label": "CCSR_DIG003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.034702394025916974,
+        "val_support": 256
+      },
+      {
+        "label": "CCSR_DIG004",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.4135574177238893,
+        "val_support": 4485
+      },
+      {
+        "label": "CCSR_DIG005",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.029767116091752758,
+        "val_support": 195
+      },
+      {
+        "label": "CCSR_DIG006",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.010362694300518135,
+        "val_support": 25
+      },
+      {
+        "label": "CCSR_DIG007",
+        "threshold": 0.6000000000000001,
+        "val_f1_at_threshold": 0.04468121670390102,
+        "val_support": 374
+      },
+      {
+        "label": "CCSR_DIG008",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.1417644059153493,
+        "val_support": 854
+      },
+      {
+        "label": "CCSR_DIG009",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.035242290748898675,
+        "val_support": 37
+      },
+      {
+        "label": "CCSR_DIG010",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06604202674429181,
+        "val_support": 490
+      },
+      {
+        "label": "CCSR_DIG011",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.39124226558781533,
+        "val_support": 486
+      },
+      {
+        "label": "CCSR_DIG012",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0645093062605753,
+        "val_support": 427
+      },
+      {
+        "label": "CCSR_DIG013",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.07451923076923077,
+        "val_support": 463
+      },
+      {
+        "label": "CCSR_DIG014",
+        "threshold": 0.8500000000000001,
+        "val_f1_at_threshold": 0.03252385082393755,
+        "val_support": 261
+      },
+      {
+        "label": "CCSR_DIG015",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.028922631959508314,
+        "val_support": 142
+      },
+      {
+        "label": "CCSR_DIG016",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.057404780093855724,
+        "val_support": 371
+      },
+      {
+        "label": "CCSR_DIG017",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.09325783047248273,
+        "val_support": 660
+      },
+      {
+        "label": "CCSR_DIG018",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.13039167079821515,
+        "val_support": 357
+      },
+      {
+        "label": "CCSR_DIG019",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.21757981868348444,
+        "val_support": 1489
+      },
+      {
+        "label": "CCSR_DIG020",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.08445388063222459,
+        "val_support": 466
+      },
+      {
+        "label": "CCSR_DIG021",
+        "threshold": 0.30000000000000004,
+        "val_f1_at_threshold": 0.06137892376681613,
+        "val_support": 529
+      },
+      {
+        "label": "CCSR_DIG022",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06998158379373848,
+        "val_support": 631
+      },
+      {
+        "label": "CCSR_DIG023",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.15902140672782875,
+        "val_support": 203
+      },
+      {
+        "label": "CCSR_DIG024",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0655792276964048,
+        "val_support": 302
+      },
+      {
+        "label": "CCSR_DIG025",
+        "threshold": 0.8500000000000001,
+        "val_f1_at_threshold": 0.20003277434860983,
+        "val_support": 1908
+      },
+      {
+        "label": "CCSR_EAR001",
+        "threshold": 0.5,
+        "val_f1_at_threshold": 0.0058823529411764705,
+        "val_support": 16
+      },
+      {
+        "label": "CCSR_EAR002",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 9
+      },
+      {
+        "label": "CCSR_EAR003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.03566121842496285,
+        "val_support": 98
+      },
+      {
+        "label": "CCSR_EAR004",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06858710562414265,
+        "val_support": 202
+      },
+      {
+        "label": "CCSR_EAR005",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_EAR006",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.007590132827324478,
+        "val_support": 47
+      },
+      {
+        "label": "CCSR_END001",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.32154523505183924,
+        "val_support": 2383
+      },
+      {
+        "label": "CCSR_END002",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.36601483479433583,
+        "val_support": 2807
+      },
+      {
+        "label": "CCSR_END003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.5141548028145966,
+        "val_support": 3185
+      },
+      {
+        "label": "CCSR_END007",
+        "threshold": 0.6000000000000001,
+        "val_f1_at_threshold": 0.07754638394547521,
+        "val_support": 643
+      },
+      {
+        "label": "CCSR_END008",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.10134672449212508,
+        "val_support": 864
+      },
+      {
+        "label": "CCSR_END009",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.2347667740579913,
+        "val_support": 1812
+      },
+      {
+        "label": "CCSR_END010",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.5993999538426034,
+        "val_support": 6552
+      },
+      {
+        "label": "CCSR_END011",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.38344145237317406,
+        "val_support": 4145
+      },
+      {
+        "label": "CCSR_END012",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 2
+      },
+      {
+        "label": "CCSR_END013",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.048846675712347354,
+        "val_support": 261
+      },
+      {
+        "label": "CCSR_END014",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.16914402870322914,
+        "val_support": 220
+      },
+      {
+        "label": "CCSR_END015",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.07643662359087161,
+        "val_support": 601
+      },
+      {
+        "label": "CCSR_END016",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.1471552666398205,
+        "val_support": 1394
+      },
+      {
+        "label": "CCSR_END017",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_EYE001",
+        "threshold": 0.75,
+        "val_f1_at_threshold": 0.012182439459218541,
+        "val_support": 95
+      },
+      {
+        "label": "CCSR_EYE002",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.03161652218255992,
+        "val_support": 99
+      },
+      {
+        "label": "CCSR_EYE003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.16544417277913612,
+        "val_support": 477
+      },
+      {
+        "label": "CCSR_EYE004",
+        "threshold": 0.65,
+        "val_f1_at_threshold": 0.05555555555555555,
+        "val_support": 9
+      },
+      {
+        "label": "CCSR_EYE005",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.07314285714285713,
+        "val_support": 172
+      },
+      {
+        "label": "CCSR_EYE006",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0520446096654275,
+        "val_support": 44
+      },
+      {
+        "label": "CCSR_EYE007",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 7
+      },
+      {
+        "label": "CCSR_EYE008",
+        "threshold": 0.75,
+        "val_f1_at_threshold": 0.009606724707295107,
+        "val_support": 43
+      },
+      {
+        "label": "CCSR_EYE009",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_EYE010",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.049545236955481096,
+        "val_support": 354
+      },
+      {
+        "label": "CCSR_EYE011",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_EYE012",
+        "threshold": 0.75,
+        "val_f1_at_threshold": 0.009976371751115778,
+        "val_support": 52
+      },
+      {
+        "label": "CCSR_FAC003",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 10
+      },
+      {
+        "label": "CCSR_FAC004",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.07407407407407407,
+        "val_support": 12
+      },
+      {
+        "label": "CCSR_FAC006",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.38845360824742264,
+        "val_support": 524
+      },
+      {
+        "label": "CCSR_FAC008",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_FAC009",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.05954974582425563,
+        "val_support": 106
+      },
+      {
+        "label": "CCSR_FAC010",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06789157122847492,
+        "val_support": 553
+      },
+      {
+        "label": "CCSR_FAC013",
+        "threshold": 0.6000000000000001,
+        "val_f1_at_threshold": 0.04761904761904762,
+        "val_support": 13
+      },
+      {
+        "label": "CCSR_FAC014",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.03602556653108658,
+        "val_support": 261
+      },
+      {
+        "label": "CCSR_FAC016",
+        "threshold": 0.75,
+        "val_f1_at_threshold": 0.02841225626740947,
+        "val_support": 272
+      },
+      {
+        "label": "CCSR_FAC020",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_FAC022",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.10594315245478035,
+        "val_support": 103
+      },
+      {
+        "label": "CCSR_FAC024",
+        "threshold": 0.2,
+        "val_f1_at_threshold": 0.011560693641618497,
+        "val_support": 12
+      },
+      {
+        "label": "CCSR_FAC025",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.46158093310021175,
+        "val_support": 5082
+      },
+      {
+        "label": "CCSR_FAC030",
+        "threshold": 0.1,
+        "val_f1_at_threshold": 0.4,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_GEN001",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.03597710547833197,
+        "val_support": 83
+      },
+      {
+        "label": "CCSR_GEN002",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.30776525129069643,
+        "val_support": 2998
+      },
+      {
+        "label": "CCSR_GEN003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.5019061234214915,
+        "val_support": 4288
+      },
+      {
+        "label": "CCSR_GEN004",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.17641205736025753,
+        "val_support": 1623
+      },
+      {
+        "label": "CCSR_GEN005",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.035942028985507246,
+        "val_support": 153
+      },
+      {
+        "label": "CCSR_GEN006",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06754474839581222,
+        "val_support": 521
+      },
+      {
+        "label": "CCSR_GEN007",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.09698806592157605,
+        "val_support": 361
+      },
+      {
+        "label": "CCSR_GEN008",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.043815723585378066,
+        "val_support": 296
+      },
+      {
+        "label": "CCSR_GEN009",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.03694607581420181,
+        "val_support": 281
+      },
+      {
+        "label": "CCSR_GEN010",
+        "threshold": 0.8500000000000001,
+        "val_f1_at_threshold": 0.015527950310559006,
+        "val_support": 32
+      },
+      {
+        "label": "CCSR_GEN011",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_GEN012",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.2589059292355996,
+        "val_support": 1141
+      },
+      {
+        "label": "CCSR_GEN013",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.024553571428571428,
+        "val_support": 69
+      },
+      {
+        "label": "CCSR_GEN014",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.030150753768844223,
+        "val_support": 30
+      },
+      {
+        "label": "CCSR_GEN015",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_GEN016",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.01982815598149372,
+        "val_support": 80
+      },
+      {
+        "label": "CCSR_GEN017",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0507399577167019,
+        "val_support": 83
+      },
+      {
+        "label": "CCSR_GEN018",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.028316727844782376,
+        "val_support": 95
+      },
+      {
+        "label": "CCSR_GEN019",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.1286549707602339,
+        "val_support": 54
+      },
+      {
+        "label": "CCSR_GEN020",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06976744186046512,
+        "val_support": 22
+      },
+      {
+        "label": "CCSR_GEN021",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.04221635883905013,
+        "val_support": 47
+      },
+      {
+        "label": "CCSR_GEN022",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.026755852842809368,
+        "val_support": 49
+      },
+      {
+        "label": "CCSR_GEN023",
+        "threshold": 0.35000000000000003,
+        "val_f1_at_threshold": 0.005564387917329094,
+        "val_support": 30
+      },
+      {
+        "label": "CCSR_GEN024",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 5
+      },
+      {
+        "label": "CCSR_GEN025",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.023636363636363636,
+        "val_support": 106
+      },
+      {
+        "label": "CCSR_GEN026",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.024132730015082954,
+        "val_support": 67
+      },
+      {
+        "label": "CCSR_INF001",
+        "threshold": 0.4,
+        "val_f1_at_threshold": 0.26666666666666666,
+        "val_support": 5
+      },
+      {
+        "label": "CCSR_INF002",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.08449520072864851,
+        "val_support": 717
+      },
+      {
+        "label": "CCSR_INF003",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.03738317757009346,
+        "val_support": 27
+      },
+      {
+        "label": "CCSR_INF004",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.020207187619900244,
+        "val_support": 181
+      },
+      {
+        "label": "CCSR_INF005",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_INF006",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.8260427263479145,
+        "val_support": 430
+      },
+      {
+        "label": "CCSR_INF007",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.3612374886260236,
+        "val_support": 1265
+      },
+      {
+        "label": "CCSR_INF008",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.040939193257074055,
+        "val_support": 242
+      },
+      {
+        "label": "CCSR_INF009",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.021164021164021166,
+        "val_support": 46
+      },
+      {
+        "label": "CCSR_INF010",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.046692607003891044,
+        "val_support": 53
+      },
+      {
+        "label": "CCSR_INF011",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0425531914893617,
+        "val_support": 24
+      },
+      {
+        "label": "CCSR_INF012",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.015503875968992248,
+        "val_support": 112
+      },
+      {
+        "label": "CCSR_INJ001",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.02414486921529175,
+        "val_support": 36
+      },
+      {
+        "label": "CCSR_INJ002",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.01782178217821782,
+        "val_support": 80
+      },
+      {
+        "label": "CCSR_INJ003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.017010935601458083,
+        "val_support": 91
+      },
+      {
+        "label": "CCSR_INJ004",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.017550017550017546,
+        "val_support": 102
+      },
+      {
+        "label": "CCSR_INJ005",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.017810026385224272,
+        "val_support": 90
+      },
+      {
+        "label": "CCSR_INJ006",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.01645123384253819,
+        "val_support": 74
+      },
+      {
+        "label": "CCSR_INJ007",
+        "threshold": 0.05,
+        "val_f1_at_threshold": 0.0012345679012345679,
+        "val_support": 15
+      },
+      {
+        "label": "CCSR_INJ008",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.019471488178025034,
+        "val_support": 73
+      },
+      {
+        "label": "CCSR_INJ009",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 4
+      },
+      {
+        "label": "CCSR_INJ010",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.008021390374331552,
+        "val_support": 35
+      },
+      {
+        "label": "CCSR_INJ011",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.021220159151193633,
+        "val_support": 97
+      },
+      {
+        "label": "CCSR_INJ012",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.011670313639679067,
+        "val_support": 58
+      },
+      {
+        "label": "CCSR_INJ013",
+        "threshold": 0.1,
+        "val_f1_at_threshold": 0.007843137254901962,
+        "val_support": 12
+      },
+      {
+        "label": "CCSR_INJ014",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_INJ016",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 4
+      },
+      {
+        "label": "CCSR_INJ017",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.029473684210526315,
+        "val_support": 235
+      },
+      {
+        "label": "CCSR_INJ018",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ019",
+        "threshold": 0.25,
+        "val_f1_at_threshold": 0.003913894324853229,
+        "val_support": 12
+      },
+      {
+        "label": "CCSR_INJ020",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.034954407294832825,
+        "val_support": 80
+      },
+      {
+        "label": "CCSR_INJ021",
+        "threshold": 0.8500000000000001,
+        "val_f1_at_threshold": 0.020202020202020204,
+        "val_support": 17
+      },
+      {
+        "label": "CCSR_INJ022",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.019515265974189483,
+        "val_support": 111
+      },
+      {
+        "label": "CCSR_INJ023",
+        "threshold": 0.25,
+        "val_f1_at_threshold": 0.006751054852320675,
+        "val_support": 11
+      },
+      {
+        "label": "CCSR_INJ024",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.010249402118209773,
+        "val_support": 80
+      },
+      {
+        "label": "CCSR_INJ025",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 3
+      },
+      {
+        "label": "CCSR_INJ026",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.013998250218722658,
+        "val_support": 41
+      },
+      {
+        "label": "CCSR_INJ027",
+        "threshold": 0.8,
+        "val_f1_at_threshold": 0.012132524498366777,
+        "val_support": 35
+      },
+      {
+        "label": "CCSR_INJ028",
+        "threshold": 0.8,
+        "val_f1_at_threshold": 0.012727272727272728,
+        "val_support": 39
+      },
+      {
+        "label": "CCSR_INJ030",
+        "threshold": 0.65,
+        "val_f1_at_threshold": 0.08587293388429754,
+        "val_support": 785
+      },
+      {
+        "label": "CCSR_INJ031",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.027777777777777773,
+        "val_support": 43
+      },
+      {
+        "label": "CCSR_INJ032",
+        "threshold": 0.05,
+        "val_f1_at_threshold": 0.0015151515151515152,
+        "val_support": 6
+      },
+      {
+        "label": "CCSR_INJ033",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.08372619272110125,
+        "val_support": 576
+      },
+      {
+        "label": "CCSR_INJ034",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.05287239450940519,
+        "val_support": 132
+      },
+      {
+        "label": "CCSR_INJ035",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.05501432664756447,
+        "val_support": 114
+      },
+      {
+        "label": "CCSR_INJ036",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.2910826125857441,
+        "val_support": 557
+      },
+      {
+        "label": "CCSR_INJ037",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.08046683046683047,
+        "val_support": 680
+      },
+      {
+        "label": "CCSR_INJ038",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.04081632653061225,
+        "val_support": 16
+      },
+      {
+        "label": "CCSR_INJ039",
+        "threshold": 0.1,
+        "val_f1_at_threshold": 0.007692307692307692,
+        "val_support": 11
+      },
+      {
+        "label": "CCSR_INJ040",
+        "threshold": 0.55,
+        "val_f1_at_threshold": 0.02222222222222222,
+        "val_support": 8
+      },
+      {
+        "label": "CCSR_INJ041",
+        "threshold": 0.25,
+        "val_f1_at_threshold": 0.003802281368821293,
+        "val_support": 16
+      },
+      {
+        "label": "CCSR_INJ042",
+        "threshold": 0.75,
+        "val_f1_at_threshold": 0.030534351145038167,
+        "val_support": 16
+      },
+      {
+        "label": "CCSR_INJ043",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 12
+      },
+      {
+        "label": "CCSR_INJ044",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ045",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 5
+      },
+      {
+        "label": "CCSR_INJ046",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ047",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ048",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_INJ049",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ050",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ054",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ055",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ056",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 2
+      },
+      {
+        "label": "CCSR_INJ057",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ059",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ060",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ061",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ062",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ063",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ064",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_INJ065",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_INJ067",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 2
+      },
+      {
+        "label": "CCSR_INJ068",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_INJ069",
+        "threshold": 0.05,
+        "val_f1_at_threshold": 0.006600660066006602,
+        "val_support": 7
+      },
+      {
+        "label": "CCSR_INJ070",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_INJ071",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 3
+      },
+      {
+        "label": "CCSR_INJ072",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 7
+      },
+      {
+        "label": "CCSR_INJ073",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.16964285714285712,
+        "val_support": 113
+      },
+      {
+        "label": "CCSR_INJ074",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_INJ075",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 4
+      },
+      {
+        "label": "CCSR_INJ076",
+        "threshold": 0.2,
+        "val_f1_at_threshold": 0.006349206349206349,
+        "val_support": 12
+      },
+      {
+        "label": "CCSR_MAL001",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.032577903682719546,
+        "val_support": 125
+      },
+      {
+        "label": "CCSR_MAL002",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.14218009478672985,
+        "val_support": 52
+      },
+      {
+        "label": "CCSR_MAL003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.2804054054054054,
+        "val_support": 130
+      },
+      {
+        "label": "CCSR_MAL004",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.45454545454545453,
+        "val_support": 13
+      },
+      {
+        "label": "CCSR_MAL005",
+        "threshold": 0.15000000000000002,
+        "val_f1_at_threshold": 0.15384615384615383,
+        "val_support": 4
+      },
+      {
+        "label": "CCSR_MAL007",
+        "threshold": 0.5,
+        "val_f1_at_threshold": 0.22222222222222224,
+        "val_support": 7
+      },
+      {
+        "label": "CCSR_MAL008",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.28409090909090906,
+        "val_support": 53
+      },
+      {
+        "label": "CCSR_MAL009",
+        "threshold": 0.45,
+        "val_f1_at_threshold": 0.49382716049382713,
+        "val_support": 34
+      },
+      {
+        "label": "CCSR_MAL010",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.2926829268292683,
+        "val_support": 18
+      },
+      {
+        "label": "CCSR_MBD001",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.24428030985408034,
+        "val_support": 785
+      },
+      {
+        "label": "CCSR_MBD002",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.3917128164556962,
+        "val_support": 4079
+      },
+      {
+        "label": "CCSR_MBD003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.3017510194291197,
+        "val_support": 719
+      },
+      {
+        "label": "CCSR_MBD004",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06749672346002619,
+        "val_support": 171
+      },
+      {
+        "label": "CCSR_MBD005",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.25817594294946794,
+        "val_support": 2439
+      },
+      {
+        "label": "CCSR_MBD006",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0959023539668701,
+        "val_support": 100
+      },
+      {
+        "label": "CCSR_MBD007",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.11187607573149742,
+        "val_support": 555
+      },
+      {
+        "label": "CCSR_MBD008",
+        "threshold": 0.8500000000000001,
+        "val_f1_at_threshold": 0.026490066225165563,
+        "val_support": 35
+      },
+      {
+        "label": "CCSR_MBD009",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.1886993603411514,
+        "val_support": 291
+      },
+      {
+        "label": "CCSR_MBD010",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.14705882352941174,
+        "val_support": 50
+      },
+      {
+        "label": "CCSR_MBD011",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.08235294117647059,
+        "val_support": 54
+      },
+      {
+        "label": "CCSR_MBD012",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.2281089036055923,
+        "val_support": 723
+      },
+      {
+        "label": "CCSR_MBD013",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.04038461538461539,
+        "val_support": 95
+      },
+      {
+        "label": "CCSR_MBD014",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.17699910152740342,
+        "val_support": 240
+      },
+      {
+        "label": "CCSR_MBD017",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.32332563510392603,
+        "val_support": 1570
+      },
+      {
+        "label": "CCSR_MBD018",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.1309018236322758,
+        "val_support": 343
+      },
+      {
+        "label": "CCSR_MBD019",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.11654676258992805,
+        "val_support": 233
+      },
+      {
+        "label": "CCSR_MBD020",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.09571788413098237,
+        "val_support": 61
+      },
+      {
+        "label": "CCSR_MBD021",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.23657474600870826,
+        "val_support": 397
+      },
+      {
+        "label": "CCSR_MBD022",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_MBD023",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.07871914609739827,
+        "val_support": 115
+      },
+      {
+        "label": "CCSR_MBD024",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 4
+      },
+      {
+        "label": "CCSR_MBD025",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.059651097355092865,
+        "val_support": 169
+      },
+      {
+        "label": "CCSR_MBD026",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0851729532417869,
+        "val_support": 341
+      },
+      {
+        "label": "CCSR_MBD027",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_MBD034",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_MUS001",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.04240282685512368,
+        "val_support": 37
+      },
+      {
+        "label": "CCSR_MUS002",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.12156143568247314,
+        "val_support": 322
+      },
+      {
+        "label": "CCSR_MUS003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.3980978260869565,
+        "val_support": 330
+      },
+      {
+        "label": "CCSR_MUS004",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.19999999999999998,
+        "val_support": 9
+      },
+      {
+        "label": "CCSR_MUS005",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 2
+      },
+      {
+        "label": "CCSR_MUS006",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.14926545683085865,
+        "val_support": 1062
+      },
+      {
+        "label": "CCSR_MUS007",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0316712472189504,
+        "val_support": 211
+      },
+      {
+        "label": "CCSR_MUS008",
+        "threshold": 0.1,
+        "val_f1_at_threshold": 0.28571428571428575,
+        "val_support": 2
+      },
+      {
+        "label": "CCSR_MUS009",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.010582010582010581,
+        "val_support": 67
+      },
+      {
+        "label": "CCSR_MUS010",
+        "threshold": 0.7000000000000001,
+        "val_f1_at_threshold": 0.1260076610828426,
+        "val_support": 1191
+      },
+      {
+        "label": "CCSR_MUS011",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.10819186203179736,
+        "val_support": 914
+      },
+      {
+        "label": "CCSR_MUS012",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 3
+      },
+      {
+        "label": "CCSR_MUS013",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.19498189988765446,
+        "val_support": 916
+      },
+      {
+        "label": "CCSR_MUS014",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0482897384305835,
+        "val_support": 72
+      },
+      {
+        "label": "CCSR_MUS015",
+        "threshold": 0.30000000000000004,
+        "val_f1_at_threshold": 0.009345794392523364,
+        "val_support": 14
+      },
+      {
+        "label": "CCSR_MUS016",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.05302402651201326,
+        "val_support": 88
+      },
+      {
+        "label": "CCSR_MUS017",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 4
+      },
+      {
+        "label": "CCSR_MUS020",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.10526315789473685,
+        "val_support": 10
+      },
+      {
+        "label": "CCSR_MUS021",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.03551609322974473,
+        "val_support": 70
+      },
+      {
+        "label": "CCSR_MUS022",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.07396449704142012,
+        "val_support": 71
+      },
+      {
+        "label": "CCSR_MUS023",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.013636363636363636,
+        "val_support": 22
+      },
+      {
+        "label": "CCSR_MUS024",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.31407035175879394,
+        "val_support": 435
+      },
+      {
+        "label": "CCSR_MUS025",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.04329819277108434,
+        "val_support": 346
+      },
+      {
+        "label": "CCSR_MUS026",
+        "threshold": 0.7000000000000001,
+        "val_f1_at_threshold": 0.04649511978704526,
+        "val_support": 347
+      },
+      {
+        "label": "CCSR_MUS027",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_MUS028",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06146051327238683,
+        "val_support": 455
+      },
+      {
+        "label": "CCSR_MUS029",
+        "threshold": 0.25,
+        "val_f1_at_threshold": 0.005805515239477504,
+        "val_support": 19
+      },
+      {
+        "label": "CCSR_MUS030",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06535947712418301,
+        "val_support": 31
+      },
+      {
+        "label": "CCSR_MUS031",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 2
+      },
+      {
+        "label": "CCSR_MUS032",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.22535211267605632,
+        "val_support": 51
+      },
+      {
+        "label": "CCSR_MUS033",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.2529328348588372,
+        "val_support": 1058
+      },
+      {
+        "label": "CCSR_MUS034",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.061135371179039305,
+        "val_support": 43
+      },
+      {
+        "label": "CCSR_MUS035",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_MUS036",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_MUS037",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.03707742639040349,
+        "val_support": 90
+      },
+      {
+        "label": "CCSR_MUS038",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.044965962020781076,
+        "val_support": 363
+      },
+      {
+        "label": "CCSR_NEO001",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 4
+      },
+      {
+        "label": "CCSR_NEO002",
+        "threshold": 0.7000000000000001,
+        "val_f1_at_threshold": 0.4761904761904762,
+        "val_support": 9
+      },
+      {
+        "label": "CCSR_NEO003",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_NEO004",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_NEO005",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_NEO006",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_NEO007",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_NEO008",
+        "threshold": 0.2,
+        "val_f1_at_threshold": 0.6,
+        "val_support": 11
+      },
+      {
+        "label": "CCSR_NEO009",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_NEO010",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_NEO011",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 3
+      },
+      {
+        "label": "CCSR_NEO012",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.3137254901960784,
+        "val_support": 26
+      },
+      {
+        "label": "CCSR_NEO013",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.4444444444444444,
+        "val_support": 83
+      },
+      {
+        "label": "CCSR_NEO014",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.6666666666666666,
+        "val_support": 4
+      },
+      {
+        "label": "CCSR_NEO015",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.2860082304526749,
+        "val_support": 180
+      },
+      {
+        "label": "CCSR_NEO016",
+        "threshold": 0.45,
+        "val_f1_at_threshold": 0.05555555555555555,
+        "val_support": 7
+      },
+      {
+        "label": "CCSR_NEO017",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.402555910543131,
+        "val_support": 148
+      },
+      {
+        "label": "CCSR_NEO018",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.48000000000000004,
+        "val_support": 51
+      },
+      {
+        "label": "CCSR_NEO019",
+        "threshold": 0.6000000000000001,
+        "val_f1_at_threshold": 0.6956521739130435,
+        "val_support": 14
+      },
+      {
+        "label": "CCSR_NEO020",
+        "threshold": 0.6000000000000001,
+        "val_f1_at_threshold": 0.42424242424242425,
+        "val_support": 15
+      },
+      {
+        "label": "CCSR_NEO021",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.24060150375939846,
+        "val_support": 35
+      },
+      {
+        "label": "CCSR_NEO022",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.21569965870307167,
+        "val_support": 194
+      },
+      {
+        "label": "CCSR_NEO023",
+        "threshold": 0.55,
+        "val_f1_at_threshold": 0.48148148148148145,
+        "val_support": 15
+      },
+      {
+        "label": "CCSR_NEO024",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.6470588235294118,
+        "val_support": 58
+      },
+      {
+        "label": "CCSR_NEO025",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.36363636363636365,
+        "val_support": 26
+      },
+      {
+        "label": "CCSR_NEO026",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_NEO027",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.15384615384615385,
+        "val_support": 21
+      },
+      {
+        "label": "CCSR_NEO028",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_NEO029",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 5
+      },
+      {
+        "label": "CCSR_NEO030",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.22641509433962265,
+        "val_support": 127
+      },
+      {
+        "label": "CCSR_NEO031",
+        "threshold": 0.1,
+        "val_f1_at_threshold": 0.09523809523809522,
+        "val_support": 6
+      },
+      {
+        "label": "CCSR_NEO032",
+        "threshold": 0.7000000000000001,
+        "val_f1_at_threshold": 0.9090909090909091,
+        "val_support": 11
+      },
+      {
+        "label": "CCSR_NEO033",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.5185185185185185,
+        "val_support": 77
+      },
+      {
+        "label": "CCSR_NEO034",
+        "threshold": 0.75,
+        "val_f1_at_threshold": 0.6666666666666666,
+        "val_support": 9
+      },
+      {
+        "label": "CCSR_NEO035",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.4482758620689655,
+        "val_support": 49
+      },
+      {
+        "label": "CCSR_NEO036",
+        "threshold": 0.1,
+        "val_f1_at_threshold": 0.4615384615384615,
+        "val_support": 6
+      },
+      {
+        "label": "CCSR_NEO037",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_NEO038",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 16
+      },
+      {
+        "label": "CCSR_NEO039",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.15076335877862596,
+        "val_support": 136
+      },
+      {
+        "label": "CCSR_NEO040",
+        "threshold": 0.5,
+        "val_f1_at_threshold": 0.6666666666666666,
+        "val_support": 3
+      },
+      {
+        "label": "CCSR_NEO041",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_NEO042",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_NEO043",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.21465968586387435,
+        "val_support": 76
+      },
+      {
+        "label": "CCSR_NEO044",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 8
+      },
+      {
+        "label": "CCSR_NEO045",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.2865013774104683,
+        "val_support": 88
+      },
+      {
+        "label": "CCSR_NEO046",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 8
+      },
+      {
+        "label": "CCSR_NEO047",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_NEO048",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.6250000000000001,
+        "val_support": 42
+      },
+      {
+        "label": "CCSR_NEO049",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_NEO050",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.06451612903225806,
+        "val_support": 15
+      },
+      {
+        "label": "CCSR_NEO051",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.5770750988142292,
+        "val_support": 83
+      },
+      {
+        "label": "CCSR_NEO052",
+        "threshold": 0.05,
+        "val_f1_at_threshold": 0.8,
+        "val_support": 3
+      },
+      {
+        "label": "CCSR_NEO054",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_NEO055",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_NEO056",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_NEO057",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.7246376811594203,
+        "val_support": 32
+      },
+      {
+        "label": "CCSR_NEO058",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.5682062298603652,
+        "val_support": 548
+      },
+      {
+        "label": "CCSR_NEO059",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.7368421052631579,
+        "val_support": 31
+      },
+      {
+        "label": "CCSR_NEO060",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.6469135802469136,
+        "val_support": 140
+      },
+      {
+        "label": "CCSR_NEO061",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.6988847583643123,
+        "val_support": 111
+      },
+      {
+        "label": "CCSR_NEO062",
+        "threshold": 0.8500000000000001,
+        "val_f1_at_threshold": 0.5964912280701755,
+        "val_support": 27
+      },
+      {
+        "label": "CCSR_NEO063",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_NEO064",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.30434782608695654,
+        "val_support": 36
+      },
+      {
+        "label": "CCSR_NEO065",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.8458333333333334,
+        "val_support": 217
+      },
+      {
+        "label": "CCSR_NEO066",
+        "threshold": 0.7000000000000001,
+        "val_f1_at_threshold": 0.6165413533834586,
+        "val_support": 53
+      },
+      {
+        "label": "CCSR_NEO067",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_NEO068",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.2764227642276423,
+        "val_support": 61
+      },
+      {
+        "label": "CCSR_NEO069",
+        "threshold": 0.6000000000000001,
+        "val_f1_at_threshold": 0.16666666666666666,
+        "val_support": 3
+      },
+      {
+        "label": "CCSR_NEO070",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.3048428723242751,
+        "val_support": 1074
+      },
+      {
+        "label": "CCSR_NEO071",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06274509803921569,
+        "val_support": 26
+      },
+      {
+        "label": "CCSR_NEO072",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.03960912052117264,
+        "val_support": 266
+      },
+      {
+        "label": "CCSR_NEO073",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.05080286673319424,
+        "val_support": 398
+      },
+      {
+        "label": "CCSR_NEO074",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.231160033869602,
+        "val_support": 627
+      },
+      {
+        "label": "CCSR_NEO075",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.4926108374384237,
+        "val_support": 113
+      },
+      {
+        "label": "CCSR_NEO078",
+        "threshold": 0.4,
+        "val_f1_at_threshold": 0.07272727272727272,
+        "val_support": 6
+      },
+      {
+        "label": "CCSR_NVS001",
+        "threshold": 0.75,
+        "val_f1_at_threshold": 0.012511170688114387,
+        "val_support": 25
+      },
+      {
+        "label": "CCSR_NVS002",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.07692307692307691,
+        "val_support": 15
+      },
+      {
+        "label": "CCSR_NVS003",
+        "threshold": 0.5,
+        "val_f1_at_threshold": 0.2857142857142857,
+        "val_support": 5
+      },
+      {
+        "label": "CCSR_NVS004",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.3668965517241379,
+        "val_support": 170
+      },
+      {
+        "label": "CCSR_NVS005",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.9078014184397163,
+        "val_support": 131
+      },
+      {
+        "label": "CCSR_NVS006",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06167633104902478,
+        "val_support": 210
+      },
+      {
+        "label": "CCSR_NVS007",
+        "threshold": 0.55,
+        "val_f1_at_threshold": 0.8760330578512397,
+        "val_support": 58
+      },
+      {
+        "label": "CCSR_NVS008",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.07031888798037612,
+        "val_support": 242
+      },
+      {
+        "label": "CCSR_NVS009",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.21815378685681247,
+        "val_support": 1247
+      },
+      {
+        "label": "CCSR_NVS010",
+        "threshold": 0.8,
+        "val_f1_at_threshold": 0.12165210036650691,
+        "val_support": 980
+      },
+      {
+        "label": "CCSR_NVS011",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.12959873562209148,
+        "val_support": 863
+      },
+      {
+        "label": "CCSR_NVS012",
+        "threshold": 0.7000000000000001,
+        "val_f1_at_threshold": 0.011095700416088768,
+        "val_support": 60
+      },
+      {
+        "label": "CCSR_NVS013",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.01726894787336105,
+        "val_support": 134
+      },
+      {
+        "label": "CCSR_NVS014",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06451612903225808,
+        "val_support": 15
+      },
+      {
+        "label": "CCSR_NVS015",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.05621642363775902,
+        "val_support": 477
+      },
+      {
+        "label": "CCSR_NVS016",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.27690953114681927,
+        "val_support": 2685
+      },
+      {
+        "label": "CCSR_NVS017",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.03336203185535945,
+        "val_support": 299
+      },
+      {
+        "label": "CCSR_NVS018",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.4712041884816754,
+        "val_support": 63
+      },
+      {
+        "label": "CCSR_NVS019",
+        "threshold": 0.65,
+        "val_f1_at_threshold": 0.16193860313391972,
+        "val_support": 1470
+      },
+      {
+        "label": "CCSR_NVS020",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.1251004388404722,
+        "val_support": 1158
+      },
+      {
+        "label": "CCSR_NVS021",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.027906976744186046,
+        "val_support": 30
+      },
+      {
+        "label": "CCSR_NVS022",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 4
+      },
+      {
+        "label": "CCSR_PNL004",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_PNL006",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_PNL009",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_PNL010",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 3
+      },
+      {
+        "label": "CCSR_PNL013",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_PNL014",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_PNL015",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_PRG003",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 4
+      },
+      {
+        "label": "CCSR_PRG004",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 2
+      },
+      {
+        "label": "CCSR_PRG005",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_PRG006",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 2
+      },
+      {
+        "label": "CCSR_PRG007",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 1
+      },
+      {
+        "label": "CCSR_PRG009",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 2
+      },
+      {
+        "label": "CCSR_PRG010",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_PRG011",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.21666666666666667,
+        "val_support": 45
+      },
+      {
+        "label": "CCSR_PRG012",
+        "threshold": 0.7000000000000001,
+        "val_f1_at_threshold": 0.42857142857142855,
+        "val_support": 15
+      },
+      {
+        "label": "CCSR_PRG013",
+        "threshold": 0.8,
+        "val_f1_at_threshold": 0.08045977011494253,
+        "val_support": 28
+      },
+      {
+        "label": "CCSR_PRG014",
+        "threshold": 0.8,
+        "val_f1_at_threshold": 0.29629629629629634,
+        "val_support": 14
+      },
+      {
+        "label": "CCSR_PRG015",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 2
+      },
+      {
+        "label": "CCSR_PRG016",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.13740458015267176,
+        "val_support": 33
+      },
+      {
+        "label": "CCSR_PRG017",
+        "threshold": 0.8500000000000001,
+        "val_f1_at_threshold": 0.125,
+        "val_support": 20
+      },
+      {
+        "label": "CCSR_PRG018",
+        "threshold": 0.7000000000000001,
+        "val_f1_at_threshold": 0.09677419354838708,
+        "val_support": 16
+      },
+      {
+        "label": "CCSR_PRG019",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.3185840707964601,
+        "val_support": 47
+      },
+      {
+        "label": "CCSR_PRG020",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.16083916083916083,
+        "val_support": 50
+      },
+      {
+        "label": "CCSR_PRG021",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 3
+      },
+      {
+        "label": "CCSR_PRG022",
+        "threshold": 0.8500000000000001,
+        "val_f1_at_threshold": 0.19512195121951217,
+        "val_support": 16
+      },
+      {
+        "label": "CCSR_PRG023",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.23312883435582823,
+        "val_support": 87
+      },
+      {
+        "label": "CCSR_PRG024",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.2236421725239617,
+        "val_support": 60
+      },
+      {
+        "label": "CCSR_PRG025",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_PRG026",
+        "threshold": 0.75,
+        "val_f1_at_threshold": 0.16621983914209112,
+        "val_support": 44
+      },
+      {
+        "label": "CCSR_PRG027",
+        "threshold": 0.8500000000000001,
+        "val_f1_at_threshold": 0.06896551724137932,
+        "val_support": 31
+      },
+      {
+        "label": "CCSR_PRG028",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.31901840490797545,
+        "val_support": 136
+      },
+      {
+        "label": "CCSR_PRG029",
+        "threshold": 0.05,
+        "val_f1_at_threshold": 0.06666666666666667,
+        "val_support": 2
+      },
+      {
+        "label": "CCSR_RSP001",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.021141649048625793,
+        "val_support": 97
+      },
+      {
+        "label": "CCSR_RSP002",
+        "threshold": 0.5,
+        "val_f1_at_threshold": 0.1160959531221388,
+        "val_support": 1040
+      },
+      {
+        "label": "CCSR_RSP003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.012442520962942927,
+        "val_support": 92
+      },
+      {
+        "label": "CCSR_RSP004",
+        "threshold": 0.55,
+        "val_f1_at_threshold": 0.47619047619047616,
+        "val_support": 15
+      },
+      {
+        "label": "CCSR_RSP005",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.016637478108581436,
+        "val_support": 58
+      },
+      {
+        "label": "CCSR_RSP006",
+        "threshold": 0.7000000000000001,
+        "val_f1_at_threshold": 0.02170767004341534,
+        "val_support": 171
+      },
+      {
+        "label": "CCSR_RSP007",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.03676105315449578,
+        "val_support": 267
+      },
+      {
+        "label": "CCSR_RSP008",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.2910969310240049,
+        "val_support": 2052
+      },
+      {
+        "label": "CCSR_RSP009",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.27241270839886755,
+        "val_support": 1862
+      },
+      {
+        "label": "CCSR_RSP010",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.04014558288298225,
+        "val_support": 308
+      },
+      {
+        "label": "CCSR_RSP011",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.06258481679572124,
+        "val_support": 526
+      },
+      {
+        "label": "CCSR_RSP012",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.10524848400362447,
+        "val_support": 922
+      },
+      {
+        "label": "CCSR_RSP013",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.10526315789473685,
+        "val_support": 14
+      },
+      {
+        "label": "CCSR_RSP014",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.024390243902439025,
+        "val_support": 14
+      },
+      {
+        "label": "CCSR_RSP015",
+        "threshold": 0.15000000000000002,
+        "val_f1_at_threshold": 0.009950248756218904,
+        "val_support": 5
+      },
+      {
+        "label": "CCSR_RSP016",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06133726284766991,
+        "val_support": 487
+      },
+      {
+        "label": "CCSR_RSP017",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.019158683881715953,
+        "val_support": 126
+      },
+      {
+        "label": "CCSR_SKN001",
+        "threshold": 0.8,
+        "val_f1_at_threshold": 0.09445802232644164,
+        "val_support": 837
+      },
+      {
+        "label": "CCSR_SKN002",
+        "threshold": 0.7000000000000001,
+        "val_f1_at_threshold": 0.07352104664391355,
+        "val_support": 625
+      },
+      {
+        "label": "CCSR_SKN003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.06205389657683904,
+        "val_support": 338
+      },
+      {
+        "label": "CCSR_SKN004",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.16156702086800667,
+        "val_support": 741
+      },
+      {
+        "label": "CCSR_SKN005",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.028535459504825854,
+        "val_support": 108
+      },
+      {
+        "label": "CCSR_SKN006",
+        "threshold": 0.35000000000000003,
+        "val_f1_at_threshold": 0.007116171499733143,
+        "val_support": 43
+      },
+      {
+        "label": "CCSR_SKN007",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.02309132515082172,
+        "val_support": 222
+      },
+      {
+        "label": "CCSR_SYM001",
+        "threshold": 0.1,
+        "val_f1_at_threshold": 0.033387685379299634,
+        "val_support": 297
+      },
+      {
+        "label": "CCSR_SYM002",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.02103912764592688,
+        "val_support": 170
+      },
+      {
+        "label": "CCSR_SYM003",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.031110375641237795,
+        "val_support": 193
+      },
+      {
+        "label": "CCSR_SYM004",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.10230073952341824,
+        "val_support": 892
+      },
+      {
+        "label": "CCSR_SYM005",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.0405298013245033,
+        "val_support": 292
+      },
+      {
+        "label": "CCSR_SYM006",
+        "threshold": 0.8500000000000001,
+        "val_f1_at_threshold": 0.18691890148868703,
+        "val_support": 1818
+      },
+      {
+        "label": "CCSR_SYM007",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.03018951079770824,
+        "val_support": 250
+      },
+      {
+        "label": "CCSR_SYM008",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.026300743281875358,
+        "val_support": 86
+      },
+      {
+        "label": "CCSR_SYM009",
+        "threshold": 0.9000000000000002,
+        "val_f1_at_threshold": 0.0,
+        "val_support": 0
+      },
+      {
+        "label": "CCSR_SYM010",
+        "threshold": 0.25,
+        "val_f1_at_threshold": 0.09907734225029413,
+        "val_support": 883
+      },
+      {
+        "label": "CCSR_SYM011",
+        "threshold": 0.9,
+        "val_f1_at_threshold": 0.10734571446805795,
+        "val_support": 955
+      },
+      {
+        "label": "CCSR_SYM012",
+        "threshold": 0.4,
+        "val_f1_at_threshold": 0.06563402467839327,
+        "val_support": 597
+      },
+      {
+        "label": "CCSR_SYM013",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.15630147100584998,
+        "val_support": 1478
+      },
+      {
+        "label": "CCSR_SYM014",
+        "threshold": 0.05,
+        "val_f1_at_threshold": 0.034219148161630866,
+        "val_support": 322
+      },
+      {
+        "label": "CCSR_SYM015",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.03916139240506329,
+        "val_support": 346
+      },
+      {
+        "label": "CCSR_SYM016",
+        "threshold": 0.25,
+        "val_f1_at_threshold": 0.1261690000553373,
+        "val_support": 1194
+      },
+      {
+        "label": "CCSR_SYM017",
+        "threshold": 0.7000000000000001,
+        "val_f1_at_threshold": 0.19576440838689285,
+        "val_support": 1895
+      },
+      {
+        "label": "CCSR_SYM018",
+        "threshold": 0.9500000000000001,
+        "val_f1_at_threshold": 0.05937921727395412,
+        "val_support": 78
+      }
+    ]
+  }
+}

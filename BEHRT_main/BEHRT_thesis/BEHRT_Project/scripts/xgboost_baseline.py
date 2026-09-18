@@ -125,6 +125,16 @@ def main():
     val_y_prob = clf.predict_proba(val_x).astype(np.float32)
     test_y_prob = clf.predict_proba(test_x).astype(np.float32)
 
+    # Cache raw test-set probabilities so downstream scripts (e.g. the
+    # bootstrap confidence-interval script) can reuse this fit instead of
+    # refitting XGBoost themselves -- refitting inside a second script while
+    # other models/dataframes are also resident in memory has reliably
+    # segfaulted (SIGSEGV in libxgboost.dylib) on this machine under high
+    # swap pressure, even with reduced OneVsRestClassifier n_jobs.
+    test_prob_path = results_dir / "xgboost_test_y_prob.npy"
+    np.save(test_prob_path, test_y_prob)
+    print(f"  Cached test_y_prob to {test_prob_path}", flush=True)
+
     metric_exclude_labels = ("UNK",)
     summary_xgb, per_class_xgb = run_baseline(
         "xgboost", val_y_prob, val_y_true, test_y_prob, test_y_true,
