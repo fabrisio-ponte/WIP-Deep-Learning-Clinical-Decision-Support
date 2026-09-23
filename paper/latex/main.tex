@@ -817,8 +817,10 @@ metrics can be matched or exceeded by a logistic-regression or XGBoost model
 over simple per-patient history features; BEHRT's genuine, defensible
 contribution lies specifically in new-diagnosis detection and in yielding a
 single well-calibrated decision threshold, not in aggregate ranking
-superiority. Positive-class weighting provides a verified, though
-single-seed, +7.6\% improvement in rare-code ranking. Two independent
+superiority. Positive-class weighting provides a verified multi-seed
+(42/43/44) ranking gain (+7.9\% mean relative APS), with a corresponding
+tuned-threshold micro-F1 trade-off that should be interpreted explicitly.
+Two independent
 interpretability techniques -- Integrated Gradients and attention rollout --
 corroborate that a meaningful share of the model's errors reflect genuine
 cross-category clinical comorbidity rather than superficial code confusion,
