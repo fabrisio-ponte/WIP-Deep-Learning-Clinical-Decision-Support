@@ -482,35 +482,52 @@ per-label probabilities, rather than the choice of decision threshold alone.
 
 To quantify the effect of positive-class weighting, we compared the reference
 model (\texttt{use\_pos\_weight=True}, \texttt{max\_pos\_weight=30}) against
-the single available baseline run sharing the same seed, data split, label
-vocabulary, and \emph{current} evaluation schema (\texttt{use\_pos\_weight=
-False}). Table~\ref{tab:posweight} reports the matched comparison.
+a matched baseline run (\texttt{use\_pos\_weight=False}) across three random
+seeds (42, 43, 44), each pair sharing the same seed, data split, label
+vocabulary, and \emph{current} evaluation schema. Table~\ref{tab:posweight}
+reports the per-seed comparison and the aggregate effect size.
 
 \begin{table}[h]
 \centering
-\caption{Verified baseline vs.\ positive-class-weighted comparison
-(seed 42, matched data/schema).}
+\caption{Multi-seed effect of positive-class weighting (3 seeds, matched
+data/schema).}
 \label{tab:posweight}
-\begin{tabular}{lccc}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
 \toprule
-Configuration & APS & ROC-AUC & Tuned threshold \\
+Seed & APS (base) & APS (weighted) & $\Delta$APS & AUC (base) & AUC (weighted) & $\Delta$AUC \\
 \midrule
-Baseline (no pos.\ weight) & 0.2543 & 0.8911 & 0.15 \\
-Positive-class weighted ($\le$30) & 0.2735 & 0.9006 & 0.60 \\
+42 & 0.2543 & 0.2735 & +0.0193 & 0.8911 & 0.9006 & +0.0096 \\
+43 & 0.2573 & 0.2718 & +0.0144 & 0.8910 & 0.9014 & +0.0105 \\
+44 & 0.2544 & 0.2814 & +0.0269 & 0.8914 & 0.9034 & +0.0120 \\
 \midrule
-Absolute delta & +0.0193 & +0.0096 & -- \\
-Relative change & \textbf{+7.6\%} & +1.07\% & -- \\
+Mean $\pm$ SD & 0.2553 & 0.2756 & \textbf{+0.0202 $\pm$ 0.0063} & 0.8912 & 0.9018 & +0.0107 $\pm$ 0.0012 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
-This verified +7.6\% APS improvement supersedes an earlier, unverified
-internal estimate of +4.6\%, which mixed runs from the legacy evaluation
-schema. We flag one limitation explicitly: only seed 42 has a full training
-run under the current evaluation schema for both the baseline and
-weighted arms, so this is a single-seed comparison rather than one averaged
-across multiple random seeds; a multi-seed replication is listed as future
-work (Section~8).
+The direction of the ranking-metric improvement is consistent across all
+three seeds, confirming that the earlier single-seed +7.6\% relative APS
+estimate (seed 42 alone) is not an artifact of seed variance: the mean
+relative APS change across the three seeds is +7.9\%\ (individual seeds:
++7.6\%, +5.6\%, +10.6\%), and every seed shows a positive $\Delta$APS and
+$\Delta$AUC.
+
+However, the same three seeds reveal a trade-off that was not visible in
+the original single-seed comparison. Positive-class weighting shifts the
+F1-optimal decision threshold from 0.15 (baseline) to 0.60 (weighted), and
+at these respective tuned thresholds, test-set micro-F1 is consistently
+\emph{lower} for the weighted arm: baseline mean F1 = 0.2716 (identical to
+4 decimal places across all three seeds) vs.\ weighted mean F1 = 0.2416
+$\pm$ 0.0067 (per-seed $\Delta$F1: $-$0.0335, $-$0.0343, $-$0.0223). All
+micro-F1 figures reported elsewhere in this paper (e.g.\
+Table~\ref{tab:bootstrap}) use the positive-class-weighted reference
+model, so its F1 should be read as the outcome of an explicit
+ranking-vs.\ point-decision trade-off rather than evidence that weighting
+uniformly improves every metric. This verified result supersedes an
+earlier, unverified internal estimate of +4.6\% APS, which mixed runs from
+the legacy evaluation schema.
 
 \subsection{Performance by Clinical Code Type}
 
@@ -686,8 +703,9 @@ where it achieves the highest F1 (0.061) and ROC-AUC (0.865) of any model
 tested, including the flat-feature learners, and in producing usable point
 predictions (micro-F1 = 0.238) from a single, well-calibrated decision
 threshold without requiring per-label tuning, unlike the XGBoost baseline.
-Positive-class weighting provides a verified, if single-seed, +7.6\% APS
-improvement for rare-code detection on top of this.
+Positive-class weighting provides a verified, multi-seed (n=3) +7.9\% mean
+APS improvement for rare-code detection on top of this, at the cost of a
+consistent reduction in tuned-threshold micro-F1.
 
 \textbf{Where the analogy to general disease prediction breaks.} Prediction
 is not the same as mechanistic understanding: the model outputs codes, not an
@@ -719,9 +737,15 @@ threshold tuning.
     administrative, injury, or pregnancy/perinatal codes with substantially
     different (generally lower, except administrative) predictability than
     disease codes.
-  \item \textbf{Single-seed pos-weight comparison.} The verified +7.6\% APS
-    improvement from positive-class weighting (Section~5.3) is based on one
-    matched seed; a multi-seed replication has not yet been performed.
+  \item \textbf{Positive-class weighting trades F1 for ranking quality.}
+    Across 3 seeds (42, 43, 44) under the current evaluation schema,
+    positive-class weighting consistently improves ranking metrics (mean
+    $\Delta$APS~=~+0.0202~$\pm$~0.0063, mean $\Delta$AUC~=~+0.0107~$\pm$~0.0012)
+    but consistently \emph{reduces} tuned-threshold micro-F1 (mean
+    $\Delta$F1~=~$-$0.0300~$\pm$~0.0067). The reference model used throughout
+    this paper is the positive-class-weighted variant, so its F1 figures
+    should be interpreted alongside this trade-off, not as a strictly
+    dominant configuration.
   \item \textbf{Fixed 64-token context window.} 37.1\% of test sequences are
     truncated, though truncation does not currently appear to harm
     performance on the recurrence-dominated portion of the task.
@@ -746,9 +770,12 @@ threshold tuning.
 \section{Future Work}
 
 \begin{enumerate}
-  \item \textbf{Multi-seed validation} of the positive-class-weighting effect
-    size under the current evaluation schema, to replace the current
-    single-seed comparison with a variance-aware estimate.
+  \item \textbf{Recovering F1 without sacrificing ranking quality} for
+    positive-class weighting: the multi-seed comparison in Section~5.3
+    shows a consistent APS/AUC gain but a consistent tuned-threshold F1
+    loss; per-label (rather than dataset-wide) weighting, or a
+    recurrence-aware threshold policy (see below), may recover the F1 lost
+    to the current single global weighting scheme.
   \item \textbf{Rare/ultra-rare label remedies}, such as few-shot or
     transfer-learning approaches, since thresholding alone cannot address the
     structural data-scarcity floor identified in Section~5.6.
