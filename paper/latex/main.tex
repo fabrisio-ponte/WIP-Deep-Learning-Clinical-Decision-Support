@@ -6,6 +6,7 @@
 \usepackage{array}
 \usepackage{longtable}
 \usepackage{graphicx}
+\graphicspath{{figures/}{paper/latex/figures/}}
 
 \usepackage{hyperref}
 \hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
@@ -434,7 +435,7 @@ the non-overlapping effect sizes around BEHRT easier to inspect at a glance.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{figures/fig_bootstrap_ci.png}
+\includegraphics[width=\textwidth]{fig_bootstrap_ci.png}
 \caption{Bootstrap 95\% confidence intervals for APS, ROC-AUC, and micro-F1
 across all models (500 paired resamples).}
 \label{fig:bootstrap-ci}
@@ -461,7 +462,7 @@ BEHRT (reference) & 0.403 & 0.681 & \textbf{0.061} & \textbf{0.865} \\
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.94\textwidth]{figures/fig_new_vs_recurring.png}
+\includegraphics[width=0.94\textwidth]{fig_new_vs_recurring.png}
 \caption{Recurring-vs-new decomposition for learned models.
 Left: micro-F1. Right: ROC-AUC. BEHRT's relative strength is concentrated
 in new-diagnosis detection.}
@@ -552,7 +553,7 @@ the legacy evaluation schema.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{figures/fig_posweight_tradeoff.png}
+\includegraphics[width=\textwidth]{fig_posweight_tradeoff.png}
 \caption{Per-seed effect of positive-class weighting (weighted minus
 baseline) across APS, ROC-AUC, and tuned-threshold micro-F1. Ranking
 metrics are consistently positive, while micro-F1 is consistently negative.}
