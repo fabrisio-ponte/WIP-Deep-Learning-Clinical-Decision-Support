@@ -428,6 +428,18 @@ Repeat last visit & 0.2372 (0.2346, 0.2398) & 0.7184 (0.7165, 0.7202) & 0.4264 (
 }
 \end{table}
 
+Figure~\ref{fig:bootstrap-ci} provides the same bootstrap uncertainty
+information as Table~\ref{tab:bootstrap} in compact visual form, making
+the non-overlapping effect sizes around BEHRT easier to inspect at a glance.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_bootstrap_ci.png}
+\caption{Bootstrap 95\% confidence intervals for APS, ROC-AUC, and micro-F1
+across all models (500 paired resamples).}
+\label{fig:bootstrap-ci}
+\end{figure}
+
 Table~\ref{tab:baselines-newrecur} decomposes each learned model's
 performance by whether the target is a recurrence or a new diagnosis.
 
@@ -446,6 +458,15 @@ BEHRT (reference) & 0.403 & 0.681 & \textbf{0.061} & \textbf{0.865} \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/fig_new_vs_recurring.png}
+\caption{Recurring-vs-new decomposition for learned models.
+Left: micro-F1. Right: ROC-AUC. BEHRT's relative strength is concentrated
+in new-diagnosis detection.}
+\label{fig:new-vs-recurring}
+\end{figure}
 
 This decomposition is the key to reconciling the aggregate result with a
 defensible role for BEHRT. Most of the aggregate metrics are driven by the
@@ -528,6 +549,15 @@ ranking-vs.\ point-decision trade-off rather than evidence that weighting
 uniformly improves every metric. This verified result supersedes an
 earlier, unverified internal estimate of +4.6\% APS, which mixed runs from
 the legacy evaluation schema.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_posweight_tradeoff.png}
+\caption{Per-seed effect of positive-class weighting (weighted minus
+baseline) across APS, ROC-AUC, and tuned-threshold micro-F1. Ranking
+metrics are consistently positive, while micro-F1 is consistently negative.}
+\label{fig:posweight-tradeoff}
+\end{figure}
 
 \subsection{Performance by Clinical Code Type}
 
